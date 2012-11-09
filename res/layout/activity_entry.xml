@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+    	android:paddingLeft="2dp"
+    	android:textSize="17sp"
+    	android:textStyle="bold" />
+    
+    <TextView
+        android:id="@+id/website"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+    	android:paddingLeft="2dp"
+    	android:textSize="13sp" />
+    
+    <TextView
+        android:id="@+id/phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+    	android:paddingLeft="2dp"
+    	android:textSize="13sp" />
+    
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+    	android:paddingLeft="2dp"
+    	android:textSize="13sp" />
+    
+    <TextView
+        android:id="@+id/long_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+    	android:paddingLeft="2dp"
+    	android:textSize="13sp" />
+    
+<!-- android:onClick="actionWebsite" -->
+
+</LinearLayout>
