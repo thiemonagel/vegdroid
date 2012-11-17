@@ -1,5 +1,6 @@
 package de.thiemonagel.myapp;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -11,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.SimpleAdapter;
@@ -78,7 +78,18 @@ public class DisplayListActivity extends ListActivity {
         protected void onPostExecute(String file_url) {
             // dismiss the dialog after getting all products
         	pDialog.dismiss();
-            // updating UI from Background Thread
+
+        	// show error, TODO: fix back button behaviour
+        	if ( !MyData.getInstance().fError.equals("") ) {
+        		AlertDialog.Builder b = new AlertDialog.Builder(DisplayListActivity.this);
+        		b	.setMessage( MyData.getInstance().fError )
+        			.setTitle( "Error" )
+        			.create()
+        			.show();
+        		return;
+        	}
+
+        	// updating UI from Background Thread
             runOnUiThread(new Runnable() {
                 public void run() {
                     /**

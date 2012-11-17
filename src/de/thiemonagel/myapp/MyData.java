@@ -34,12 +34,14 @@ public class MyData {
 	HashMap<String, HashMap<String, String>> fDataMap;   // cache of full information
 	boolean                                  fLoaded;
 	boolean                                  fkm;        // whether distances are to be displayed in km
+	String                                   fError;     // error message
 	
 	private MyData( Context c ) {
 		fContext  = c;
 		fDataList = new ArrayList<HashMap<String, String>>();
         fDataMap  = new HashMap<String,HashMap<String, String>>();
         fLoaded   = false;
+        fError    = "";
 
     	// derive preferred units from SIM card country
     	TelephonyManager tm = (TelephonyManager)fContext.getSystemService(Context.TELEPHONY_SERVICE);
@@ -147,11 +149,14 @@ public class MyData {
 	    String url = "http://www.vegguide.org/search/by-lat-long/";
     	float locationAccuracy;
 	    if ( best == null ) {
-	        Log.i( "MyApp", "No location found." );
-	        url += "0,0";
-	        locationAccuracy = .75f;
+	    	fError = "Location could not be determined!";
+	    	return;
+	    	
+	    	// for testing
+	        //Log.i( "MyApp", "No location found." );
+	        //url += "0,0";
+	        //locationAccuracy = .75f;
 	    } else {
-	    	//url += "44.9617005,-93.2766566";
 			url += best.getLatitude() + "," + best.getLongitude();
 			locationAccuracy = best.getAccuracy() / ( fkm ? 1000f : 1609.344f ); 
 	    }
@@ -189,15 +194,20 @@ public class MyData {
 	        BufferedReader reader = new BufferedReader(new InputStreamReader(content));
 	        String line;
 	        while ((line = reader.readLine()) != null) {
-	          builder.append(line);
+	            builder.append(line);
 	        }
 	      } else {
-	    	  // bad
+	    	  fError = "Bad server status code: " + statusCode;
+	    	  return;
 	      }
 	    } catch (ClientProtocolException e) {
-	      e.printStackTrace();
+	        e.printStackTrace();
+	        fError = "ClientProtocolException";
+	        return;
 	    } catch (IOException e) {
-	      e.printStackTrace();
+	        e.printStackTrace();
+	        fError = "IOException";
+	        return;
 	    }
 	    
 	    Log.i( "MyApp", builder.toString() );
@@ -270,10 +280,16 @@ public class MyData {
 		            
 		            // add to list for current display
 		            fDataList.add( map );
-	            } catch (JSONException e) { Log.e("MyApp", "uri missing!"); }
+	            } catch (JSONException e) {
+	            	Log.e("MyApp", "uri missing!");
+	            	fError = "URI missing!";
+	            	return;
+	            }
 	        }
 	    } catch (JSONException e) {
 	        e.printStackTrace();
+	        fError = "JSONException";
+	        return;
 	    }
 	    
 	    fLoaded = true;
