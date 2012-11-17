@@ -224,7 +224,8 @@ public class MyData {
 	        			"address1", "address2", "city", "distance", 
 	        			"name", "neighborhood", "phone", "postal_code",
 	        			"price_range", "short_description", "uri",
-	        			"veg_level", "website", "weighted_rating" }; 
+	        			"veg_level", "veg_level_description", "website",
+	        			"weighted_rating" }; 
 
 	        	// missing keys are set to empty strings
 	        	for ( String key : keylist ) {
@@ -242,8 +243,9 @@ public class MyData {
 	            } catch (JSONException e) { ldes = map.get("short_description"); }
 	            map.put( "long_description", ldes );
 	            
-	            String cats;
+	            // all categories in one string
 	            try {
+		            String cats;
 		            JSONArray acats = entry.getJSONArray( "categories" );
 		            cats = "(";
 		            for ( int j = 0; j < acats.length(); j++ ) {
@@ -253,8 +255,24 @@ public class MyData {
 		            	cats += acats.getString(j);
 		            }
 		            cats += ")";
-	            } catch (JSONException e) { cats = ""; }
-	            map.put( "categories", cats );
+		            map.put( "categories", cats );
+	            } catch (JSONException e) { map.put( "categories", "" ); }
+	            
+	            // cats and veg_level in one string
+	            try {
+		            String cats_vlevel;
+		            JSONArray acats = entry.getJSONArray( "categories" );
+		            cats_vlevel = "";
+		            for ( int j = 0; j < acats.length(); j++ ) {
+		            	if ( cats_vlevel != "" ) {
+		            		cats_vlevel += ", ";
+		            	}
+		            	cats_vlevel += acats.getString(j);
+		            }
+		            
+	            	cats_vlevel += " -- " + entry.getString( "veg_level_description" ).toLowerCase();		            	
+		            map.put( "cats_vlevel", cats_vlevel );
+	            } catch (JSONException e) { map.put( "cats_vlevel", "" ); }
 	
 	            // store results
 	            try {

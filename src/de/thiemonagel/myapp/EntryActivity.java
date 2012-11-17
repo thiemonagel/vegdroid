@@ -33,6 +33,9 @@ public class EntryActivity extends Activity {
     		TextView tv = (TextView) findViewById(R.id.name);
     		tv.setText( fData.get("name") );
     	}{ 
+    		TextView tv = (TextView) findViewById(R.id.veg_level_description);
+    		tv.setText( fData.get("veg_level_description") );
+    	}{ 
     		TextView tv = (TextView) findViewById(R.id.phone);
     		tv.setText( Html.fromHtml( "<a href='tel:" + fData.get("phone") + "'>" + fData.get("phone") + "</a>" ) );
     		tv.setMovementMethod( LinkMovementMethod.getInstance() );

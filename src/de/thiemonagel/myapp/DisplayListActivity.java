@@ -97,7 +97,7 @@ public class DisplayListActivity extends ListActivity {
                      * */
                     SimpleAdapter adapter = new SimpleAdapter(
                             DisplayListActivity.this, MyData.getInstance().fDataList, R.layout.list_item,
-                            new String[] { "name",    "distance",    "categories",    "short_description",    "uri",    "weighted_rating" },
+                            new String[] { "name",    "distance",    "cats_vlevel",   "short_description",    "uri",    "weighted_rating" },
                             new int[]    { R.id.name, R.id.distance, R.id.categories, R.id.short_description, R.id.uri, R.id.ratingBar });
                     
                     adapter.setViewBinder( new MyBinder() );
