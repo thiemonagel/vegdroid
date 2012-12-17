@@ -27,7 +27,7 @@ public class EntryActivity extends Activity {
         Intent i = getIntent();
         furi = i.getStringExtra( "uri" );
     	Log.i( "MyApp", "EntryActivity.onCreate() uri: " + furi );
-    	fData = MyData.getInstance().fDataMap.get(furi);
+    	fData = MyData.getInstance().getMap().get(furi);
 
     	{ 
     		TextView tv = (TextView) findViewById(R.id.name);

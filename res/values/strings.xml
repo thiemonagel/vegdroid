@@ -1,13 +1,29 @@
 <resources>
 
     <string name="app_name">VegGuide</string>
-    <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">VegGuide</string>
     <string name="button_nearby">Nearby</string>
-    <string name="title_activity_display_list">DisplayListActivity</string>
-    <string name="title_activity_list2">MainActivity</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_entry">EntryActivity</string>
+    <string name="button_ok">OK</string>
+    <string name="menu_filter_cat">Filter Category</string>
+    <string name="menu_filter_veg">Filter how veg</string>
+    <string name="menu_settings">Settings</string>
+    <string name="popup_title_filter_cat">Categories to be displayed</string>
+    <string name="title_activity_main">VegGuide</string>
+    <string name="title_activity_display_list">VegGuide</string>
+    <string name="title_activity_list2">VegGuide</string>
+    <string name="title_activity_entry">VegGuide</string>
     <string name="version_string">0.1</string>
+    
+    <string-array name="categories">
+        <item>Restaurant</item>
+        <item>Coffee/Tea/Juice</item>
+        <item>Bar</item>
+        <item>Food Court or Street Vendor</item>
+        <item>Grocery/Bakery/Deli</item>
+        <item>Caterer</item>
+        <item>General Store</item>
+        <item>Organization</item>
+        <item>Hotel/B&amp;B</item>
+        <item>Other</item>
+    </string-array>
 
 </resources>

@@ -1,3 +1,16 @@
+FEATURES
+========
+* implement veg-level filtering
+* store filter options permanently
+* be tablet-aware
+* update distances dynamically when location is changing (possibly optional)
+
+TODO
+====
+* check thread-safety
+
+BUGS
+====
 * when loading without network connect, error appears, but when
   establishing network and retrying, the error persists, this should
   be fixed

@@ -1,13 +1,19 @@
 package de.thiemonagel.myapp;
 
+import java.util.ArrayList;
+
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,19 +40,64 @@ public class DisplayListActivity extends ListActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate( R.menu.activity_display_list, menu );
+        return true;
+    }
+    
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
+            case R.id.menu_filter_cat:
+            	CreateDialog().show();
+                return true;
+            case R.id.menu_filter_veg:
+            	return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
+    }
+    
+    // TODO: maybe some of these things may be skipped upon a repeated call of update() ???
+    public void update() {
+        SimpleAdapter adapter = new SimpleAdapter(
+                DisplayListActivity.this, MyData.getInstance().getList(), R.layout.list_item,
+                new String[] { "name",    "distance",    "cats_vlevel",   "short_description",    "uri",    "weighted_rating" },
+                new int[]    { R.id.name, R.id.distance, R.id.categories, R.id.short_description, R.id.uri, R.id.ratingBar });
+        
+        adapter.setViewBinder( new MyBinder() );
+        
+        // method inherited from ListActivity
+        setListAdapter(adapter);
+        
+        ListView lv = getListView();
+        
+        // Launching new screen on Selecting Single ListItem
+        lv.setOnItemClickListener(new OnItemClickListener() {
+ 
+            // @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                    int position, long id) {
+                // getting values from selected ListItem
+                String uri = ((TextView) view.findViewById(R.id.uri)).getText().toString();
+ 
+                // Starting new intent
+                Intent in = new Intent(getApplicationContext(), EntryActivity.class);
+                in.putExtra( "uri", uri );
+                Log.i( "MyApp", "putting extra uri: '" + uri + "'" );
+                startActivity(in);
+            }
+        });
     }
     
     
     /**
      * Background Async Task to Load all product by making HTTP Request
-     * */
+     **/
     class Load extends AsyncTask<String, String, String> {
  
         /**
@@ -68,6 +119,7 @@ public class DisplayListActivity extends ListActivity {
         protected String doInBackground(String... args) {
         	
         	MyData.getInstance().Load();
+        	MyData.getInstance().updateList();
             
             return null;
         }
@@ -80,9 +132,9 @@ public class DisplayListActivity extends ListActivity {
         	pDialog.dismiss();
 
         	// show error, TODO: fix back button behaviour
-        	if ( !MyData.getInstance().fError.equals("") ) {
+        	if ( !MyData.getInstance().getError().equals("") ) {
         		AlertDialog.Builder b = new AlertDialog.Builder(DisplayListActivity.this);
-        		b	.setMessage( MyData.getInstance().fError )
+        		b	.setMessage( MyData.getInstance().getError() )
         			.setTitle( "Error" )
         			.create()
         			.show();
@@ -92,43 +144,43 @@ public class DisplayListActivity extends ListActivity {
         	// updating UI from Background Thread
             runOnUiThread(new Runnable() {
                 public void run() {
-                    /**
-                     * Updating parsed JSON data into ListView
-                     * */
-                    SimpleAdapter adapter = new SimpleAdapter(
-                            DisplayListActivity.this, MyData.getInstance().fDataList, R.layout.list_item,
-                            new String[] { "name",    "distance",    "cats_vlevel",   "short_description",    "uri",    "weighted_rating" },
-                            new int[]    { R.id.name, R.id.distance, R.id.categories, R.id.short_description, R.id.uri, R.id.ratingBar });
-                    
-                    adapter.setViewBinder( new MyBinder() );
-                    
-                    // updating listview
-                    setListAdapter(adapter);
-                    
-                    ListView lv = getListView();
-                    
-                    // Launching new screen on Selecting Single ListItem
-                    lv.setOnItemClickListener(new OnItemClickListener() {
-             
-                        // @Override
-                        public void onItemClick(AdapterView<?> parent, View view,
-                                int position, long id) {
-                            // getting values from selected ListItem
-                            String uri = ((TextView) view.findViewById(R.id.uri)).getText().toString();
-             
-                            // Starting new intent
-                            Intent in = new Intent(getApplicationContext(), EntryActivity.class);
-                            in.putExtra( "uri", uri );
-                            Log.i( "MyApp", "putting extra uri: '" + uri + "'" );
-                            startActivity(in);
-                        }
-                    });
+                	DisplayListActivity.this.update();
                 }
             });
  
         }
     }
-}
+    
+    // adapted from https://developer.android.com/guide/topics/ui/dialogs.html
+	public Dialog CreateDialog() {
+	    ArrayList<Integer> mSelectedItems = new ArrayList<Integer>();  // Where we track the selected items
+	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+	    builder.setTitle( R.string.popup_title_filter_cat )
+	    // Specify the list array, the items to be selected by default (null for none),
+	    // and the listener through which to receive callbacks when items are selected
+	           .setMultiChoiceItems(R.array.categories, MyData.getInstance().getCatFilterBool(),
+	                      new DialogInterface.OnMultiChoiceClickListener() {
+	               //@Override
+	               public void onClick(DialogInterface dialog, int which,
+	                       boolean isChecked) {
+	            	   MyData.getInstance().setCatFilter(which, isChecked);
+	               }
+	           })
+	    // Set the action buttons
+	           .setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+	               //@Override
+	               public void onClick(DialogInterface dialog, int id) {
+	            	   MyData.getInstance().updateList();
+	            	   DisplayListActivity.this.update();
+	               }
+	           });
+	
+	    return builder.create();
+	}
+    
+}   // DisplayListActivity class
+
 
 // http://stackoverflow.com/questions/7380865/android-how-can-you-set-the-value-of-a-ratingbar-within-a-listadapter
 class MyBinder implements android.widget.SimpleAdapter.ViewBinder {
@@ -147,5 +199,5 @@ class MyBinder implements android.widget.SimpleAdapter.ViewBinder {
         }
         return false;
     }
-}
 
+}   // MyBinder class

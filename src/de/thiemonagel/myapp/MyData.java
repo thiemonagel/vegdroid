@@ -5,8 +5,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -26,22 +31,29 @@ import android.telephony.TelephonyManager;
 import android.util.FloatMath;
 import android.util.Log;
 
+// Singleton containing data to be displayed
 public class MyData {
-	private static MyData instance = null;
 
-	Context                                  fContext;
-	ArrayList<HashMap<String, String>>       fDataList;  // currently to be displayed
-	HashMap<String, HashMap<String, String>> fDataMap;   // cache of full information
-	boolean                                  fLoaded;
-	boolean                                  fkm;        // whether distances are to be displayed in km
-	String                                   fError;     // error message
-	
+	private static MyData                            fInstance = null;
+	private Set<String>                              fCatFilter;
+	private ArrayList<HashMap<String, String>>       fDataList;  // data currently to be displayed
+	private HashMap<String, HashMap<String, String>> fDataMap;   // cache of full information
+	private Context                                  fContext;   // required for location manager, among others
+	private String                                   fError;     // error message
+	private boolean                                  fkm;        // whether distances are to be displayed in km
+	private boolean                                  fLoaded;
+
 	private MyData( Context c ) {
-		fContext  = c;
-		fDataList = new ArrayList<HashMap<String, String>>();
-        fDataMap  = new HashMap<String,HashMap<String, String>>();
-        fLoaded   = false;
-        fError    = "";
+		fDataList  = new ArrayList<HashMap<String, String>>();
+        fCatFilter = new HashSet<String>(); 
+        fDataMap   = new HashMap<String,HashMap<String, String>>();
+		fContext   = c;
+        fError     = "";
+        fLoaded    = false;
+        
+        // by default, all categories are selected
+        for ( String s : c.getResources().getStringArray(R.array.categories) )
+        	fCatFilter.add(s);
 
     	// derive preferred units from SIM card country
     	TelephonyManager tm = (TelephonyManager)fContext.getSystemService(Context.TELEPHONY_SERVICE);
@@ -52,7 +64,7 @@ public class MyData {
 	    // https://en.wikipedia.org/wiki/Imperial_units#Current_use_of_imperial_units
     	if (    ISO.equals("gb")
     		 || ISO.equals("io")   // British Indian Ocean Territory
-    		 || ISO.equals("uk")   // wrong, but safe to put here "just in case"
+    		 || ISO.equals("uk")   // bad iso code, checking it nevertheless, just in case...
     		 || ISO.equals("um")   // U.S. Minor Outlying Islands
     		 || ISO.equals("us") 
     		 || ISO.equals("vg")   // British Virgin Islands
@@ -60,20 +72,89 @@ public class MyData {
     		fkm = false;
     	else
     		fkm = true;
-}
+	}
 	
 	// provide application context!
 	public static void initInstance( Context c ) {
-		if ( instance == null )
-			instance = new MyData( c );
+		if ( fInstance == null )
+			fInstance = new MyData( c );
 	}
 
 	public static MyData getInstance() {
-		assert( instance != null );
-		return instance;
+		assert( fInstance != null );
+		return fInstance;
 	}
 	
+	public String getError() { return fError; }
+
+	public void setCatFilter( int index, boolean val ) {
+		String[] list = fContext.getResources().getStringArray(R.array.categories);
+		if ( val )
+			fCatFilter.add( list[index] );
+		else
+			fCatFilter.remove( list[index] ); 		
+	    Log.i( "MyApp", "CatFilter elements after modification: " + fCatFilter.size() );
+	}
+	
+	public boolean[] getCatFilterBool() {
+		String[] list = fContext.getResources().getStringArray(R.array.categories);
+		int len = list.length;
+		boolean[] ret = new boolean[len];
+		for ( int i = 0; i < len; i++ )
+			if ( fCatFilter.contains(list[i]) )
+				ret[i] = true;
+			else
+				ret[i] = false;
+		return ret;
+	}
+	
+	// return global map
+	public HashMap<String, HashMap<String, String>> getMap() {
+		return fDataMap;
+	}
+	
+	// return current display list (possibly filtered)
+	public ArrayList<HashMap<String, String>> getList() {
+		return fDataList;
+	}
+	
+	// recreate current display list (must be run after filters have been updated)
+	public void updateList() {
+		// empty list
+		fDataList.clear();
+		
+		// filter
+		for ( Map.Entry<String, HashMap<String, String>> entry : fDataMap.entrySet() ) {
+			boolean valid = false;
+			for ( String cat : fCatFilter )
+				if ( entry.getValue().get("categories").contains(cat) ) {
+					valid = true;
+					break;
+				}
+			if ( valid )			
+				fDataList.add( entry.getValue() );
+		}
+		
+		// sort
+		Collections.sort( fDataList, new Comparator<HashMap<String, String>>() {
+		    public int compare(HashMap<String, String> a, HashMap<String, String> b) {
+		    	String adist = a.get("pdistance");
+		    	String bdist = b.get("pdistance");
+		    	if ( adist == null )
+		    		return 1;
+		    	if ( bdist == null )
+		    		return -1;
+		        if ( adist.compareTo(bdist) < 0 )
+		        	return -1;
+		        else
+		        	return 1;
+		    }
+		});
+	}
+	
+	// pull data from vegguide.org and decode JSON into fDataMap
     protected void Load() {
+    	// IIRC this is to prevent re-loading after screen rotation
     	if ( fLoaded )
     		return;
     	
@@ -285,6 +366,7 @@ public class MyData {
 	            	try {
 	            		fd = Float.parseFloat(sd);
 	            	} catch (Throwable e) {};
+	            	map.put("pdistance", String.format("%10.3f", fd) );  // pricise distance in km, for sorting
 	            	if ( !fkm ) fd /= 1.609344;  // international yard and pound treaty (1959)
 	            	fd = Math.round(fd*roundMultiplier) / (float) roundMultiplier;
 	            	if ( fd < 1f )
@@ -296,8 +378,6 @@ public class MyData {
 	            		sd = String.format( "%."+roundDigits+"f %s", fd, ( fkm ? " km" : " miles" ) );
 		            map.put("distance", sd);
 		            
-		            // add to list for current display
-		            fDataList.add( map );
 	            } catch (JSONException e) {
 	            	Log.e("MyApp", "uri missing!");
 	            	fError = "URI missing!";
