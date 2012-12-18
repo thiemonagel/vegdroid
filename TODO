@@ -2,6 +2,7 @@ MISSING FEATURES
 ================
 * implement veg-level filtering
 * implement opening-time filtering
+* implement map view
 * be tablet-aware
 * update distances dynamically when location is changing (possibly optional)
 
