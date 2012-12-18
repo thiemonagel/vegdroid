@@ -1,13 +1,17 @@
-FEATURES
-========
+MISSING FEATURES
+================
 * implement veg-level filtering
-* store filter options permanently
+* implement opening-time filtering
 * be tablet-aware
 * update distances dynamically when location is changing (possibly optional)
 
 TODO
 ====
+* test on more devices
+* omit entries marked as closed
+* store category filter options permanently
 * check thread-safety
+* remove excessive logging
 
 BUGS
 ====
