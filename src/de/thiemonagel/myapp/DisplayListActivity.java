@@ -49,9 +49,13 @@ public class DisplayListActivity extends ListActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
+            case android.R.id.home:  // no idea what this is for
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
+            case R.id.menu_about:
+            	Intent intent = new Intent(this, AboutActivity.class);
+            	startActivity(intent);
+            	return true;
             case R.id.menu_filter_cat:
             	CreateDialog().show();
                 return true;

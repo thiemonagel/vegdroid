@@ -1,7 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.thiemonagel.myapp"
+    android:installLocation="auto"
     android:versionCode="1"
-    android:versionName="@string/version_string" android:installLocation="auto">
+    android:versionName="@string/version_string" >
 
     <uses-sdk
         android:minSdkVersion="7"
@@ -14,46 +16,46 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        
         <activity
-            android:name=".MainActivity"
+            android:name="de.thiemonagel.myapp.MainActivity"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name=".DisplayListActivity"
+            android:name="de.thiemonagel.myapp.DisplayListActivity"
             android:label="@string/title_activity_display_list" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.thiemonagel.myapp.MainActivity" />
         </activity>
-
         <activity
-            android:name=".List2Activity"
+            android:name="de.thiemonagel.myapp.List2Activity"
             android:label="@string/title_activity_list2" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="android.app.ListActivity" />
         </activity>
-
         <activity
-            android:name=".EntryActivity"
+            android:name="de.thiemonagel.myapp.EntryActivity"
             android:label="@string/title_activity_entry" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="android.app.EntryActivity" />
-            <!-- 
+            <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             -->
         </activity>
-
-        </application>
+        <activity
+            android:name="de.thiemonagel.myapp.AboutActivity"
+            android:label="@string/title_activity_about" >
+        </activity>
+    </application>
 
 </manifest>
