@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">VegGuide</string>
-    <string name="button_nearby">Nearby</string>
+    <string name="button_nearby">Find venues nearby</string>
     <string name="button_ok">OK</string>
     <string name="menu_about">About</string>
     <string name="menu_filter_cat">Filter Category</string>
