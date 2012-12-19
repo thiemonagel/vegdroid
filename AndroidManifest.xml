@@ -5,6 +5,18 @@
     android:versionCode="1"
     android:versionName="@string/version_string" >
 
+	<!--
+	    current version distribution: https://developer.android.com/about/dashboards/index.html
+	     7: Eclair 2.1
+	     8: Froyo  2.2
+	     9: Gingerbread 2.3-2.3.2 (almost unused)
+	    10: Gingerbread 2.3.3-2.3.7
+	    15: Ice Cream Sandwich 4.0
+	    16: Jelly Bean 4.1
+	    17: Jelly Bean 4.2
+	-->
+
+	<!-- "targetSdkVersion indicates the highest version of Android with which you have tested with your application." -->
     <uses-sdk
         android:minSdkVersion="7"
         android:targetSdkVersion="17" />
