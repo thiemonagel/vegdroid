@@ -11,6 +11,7 @@ TODO
 * test on more devices
 * omit entries marked as closed
 * store category filter options permanently
+* add icons to menu items
 * check thread-safety
 * remove excessive logging
 
