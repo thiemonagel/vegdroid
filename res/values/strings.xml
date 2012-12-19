@@ -38,6 +38,10 @@ restaurants) of http://vegguide.org.  It is provided free of charge.
 \nEach time nearby venues are listed, the current location is transferred to the vegguide.org server.  No personally identifiable
 information is transmitted except the network addresses (eg. IP address) as required by the network protocols. 
 \n
+\n<b>Source Code</b>
+\n
+\nAvailable from: https://github.com/thiemonagel/vegdroid
+\n
 \n<b>Content License: CC BY-SA 3.0 (US)</b>
 \n
 \nThe contents shown inside this app, including the VegGuide "lettuce" artwork,
