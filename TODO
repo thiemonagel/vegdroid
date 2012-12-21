@@ -3,20 +3,26 @@ MISSING FEATURES
 * implement veg-level filtering
 * implement opening-time filtering
 * implement map view
-* be tablet-aware
-* update distances dynamically when location is changing (possibly optional)
+* adapt layout to tablets
+* update list dynamically when location is changing
+* settings for miles/km preference
 
 TODO
 ====
-* test on more devices
 * omit entries marked as closed
 * store category filter options permanently
-* add icons to menu items
+* test on more devices
 * check thread-safety
 * remove excessive logging
+* use gzip transport compression
+* use https for server contact as possible sensitive data (location) is transferred
 
 BUGS
 ====
 * when loading without network connect, error appears, but when
   establishing network and retrying, the error persists, this should
   be fixed
+
+DONE
+====
+* add icons to menu items
