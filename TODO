@@ -5,14 +5,15 @@ MISSING FEATURES
 * implement map view
 * adapt layout to tablets
 * update list dynamically when location is changing
+  or, as a poor man's solution, add "Reload" and "More" buttons
 * settings for miles/km preference
 
 TODO
 ====
-* omit entries marked as closed
 * test on more devices
 * check thread-safety
 * remove excessive logging
+* decide on name and apply it everywhere
 * use gzip transport compression
 * use https for server contact as possible sensitive data (location) is transferred
 
@@ -24,5 +25,6 @@ BUGS
 
 DONE
 ====
+* omit entries marked as closed
 * store category filter options permanently
 * add icons to menu items

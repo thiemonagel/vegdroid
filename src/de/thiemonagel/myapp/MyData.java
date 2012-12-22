@@ -4,9 +4,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -308,6 +311,7 @@ public class MyData {
 	    
 	    Log.i( "MyApp", builder.toString() );
 	    
+	    Date now = new Date();
 	    try {
 	    	JSONObject json = new JSONObject(builder.toString());
 	        JSONArray entries = json.getJSONArray("entries");
@@ -317,7 +321,7 @@ public class MyData {
 	
 	        	HashMap<String, String> map = new HashMap<String, String>();
 	        	String keylist[] = {
-	        			"address1", "address2", "city", "distance", 
+	        			"address1", "address2", "close_date", "city", "distance", 
 	        			"name", "neighborhood", "phone", "postal_code",
 	        			"price_range", "short_description", "uri",
 	        			"veg_level", "veg_level_description", "website",
@@ -332,6 +336,18 @@ public class MyData {
 	            	map.put( key, s );
 	        	}
 
+	        	// skip closed entries
+	        	if ( !map.get("close_date").equals("") ) {
+	        		SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
+	        		try {
+		        		Date closed = ft.parse( map.get("close_date") );
+		        		if ( closed.before(now) )
+		        			continue;
+	        		} catch (ParseException e) { 
+		            	Log.e("MyApp", "closed_date parse error!");
+	        		}
+	        	}
+	        	
 	            // long description (use short description if long one is missing)
 	            String ldes;
 	            try {
