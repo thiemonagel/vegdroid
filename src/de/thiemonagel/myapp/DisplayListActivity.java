@@ -1,7 +1,5 @@
 package de.thiemonagel.myapp;
 
-import java.util.ArrayList;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
@@ -155,7 +153,6 @@ public class DisplayListActivity extends ListActivity {
     
     // adapted from https://developer.android.com/guide/topics/ui/dialogs.html
 	public Dialog CreateDialog() {
-	    ArrayList<Integer> mSelectedItems = new ArrayList<Integer>();  // Where we track the selected items
 	    AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
 	    builder.setTitle( R.string.popup_title_filter_cat )
@@ -174,7 +171,8 @@ public class DisplayListActivity extends ListActivity {
 	               //@Override
 	               public void onClick(DialogInterface dialog, int id) {
 	            	   MyData.getInstance().updateList();
-	            	   DisplayListActivity.this.update();
+	            	   DisplayListActivity.this.update();          	   
+	            	   MyData.getInstance().commitCatFilter();
 	               }
 	           });
 	

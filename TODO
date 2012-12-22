@@ -10,7 +10,6 @@ MISSING FEATURES
 TODO
 ====
 * omit entries marked as closed
-* store category filter options permanently
 * test on more devices
 * check thread-safety
 * remove excessive logging
@@ -25,4 +24,5 @@ BUGS
 
 DONE
 ====
+* store category filter options permanently
 * add icons to menu items

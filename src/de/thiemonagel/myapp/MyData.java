@@ -8,10 +8,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -25,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.telephony.TelephonyManager;
@@ -35,26 +34,26 @@ import android.util.Log;
 public class MyData {
 
 	private static MyData                            fInstance = null;
-	private Set<String>                              fCatFilter;
+	private int                                      fCatFilterMask;
+	private int                                      fCatFilterMaskApplied;  // last mask committed
 	private ArrayList<HashMap<String, String>>       fDataList;  // data currently to be displayed
 	private HashMap<String, HashMap<String, String>> fDataMap;   // cache of full information
 	private Context                                  fContext;   // required for location manager, among others
 	private String                                   fError;     // error message
 	private boolean                                  fkm;        // whether distances are to be displayed in km
 	private boolean                                  fLoaded;
+	private SharedPreferences                        fSettings;
+	
+	public static final String PREFS_FILE    = "config";
+	public static final String PREFS_CATMASK = "CategoryMask"; 
 
 	private MyData( Context c ) {
 		fDataList  = new ArrayList<HashMap<String, String>>();
-        fCatFilter = new HashSet<String>(); 
         fDataMap   = new HashMap<String,HashMap<String, String>>();
 		fContext   = c;
         fError     = "";
         fLoaded    = false;
         
-        // by default, all categories are selected
-        for ( String s : c.getResources().getStringArray(R.array.categories) )
-        	fCatFilter.add(s);
-
     	// derive preferred units from SIM card country
     	TelephonyManager tm = (TelephonyManager)fContext.getSystemService(Context.TELEPHONY_SERVICE);
     	String ISO = tm.getSimCountryIso().toLowerCase();
@@ -72,6 +71,12 @@ public class MyData {
     		fkm = false;
     	else
     		fkm = true;
+    	
+    	// load from SharedPreferences
+    	fSettings             = c.getSharedPreferences( PREFS_FILE, c.MODE_PRIVATE );
+        fCatFilterMask        = fSettings.getInt( PREFS_CATMASK, -1 );
+        fCatFilterMaskApplied = fCatFilterMask;
+	    Log.i( "MyApp", "Read CatFilterMask: " + fCatFilterMask );
 	}
 	
 	// provide application context!
@@ -87,25 +92,32 @@ public class MyData {
 	
 	public String getError() { return fError; }
 
+	// set category index to value val
 	public void setCatFilter( int index, boolean val ) {
-		String[] list = fContext.getResources().getStringArray(R.array.categories);
 		if ( val )
-			fCatFilter.add( list[index] );
+			fCatFilterMask |= (1<<index);
 		else
-			fCatFilter.remove( list[index] ); 		
-	    Log.i( "MyApp", "CatFilter elements after modification: " + fCatFilter.size() );
+			fCatFilterMask &= ~(1<<index);
 	}
 	
 	public boolean[] getCatFilterBool() {
 		String[] list = fContext.getResources().getStringArray(R.array.categories);
 		int len = list.length;
 		boolean[] ret = new boolean[len];
-		for ( int i = 0; i < len; i++ )
-			if ( fCatFilter.contains(list[i]) )
-				ret[i] = true;
-			else
-				ret[i] = false;
+		for ( int mask = fCatFilterMask, i = 0; mask != 0 && i < len; mask >>>= 1, i++ )
+			ret[i] = (mask&1)==1 ? true : false;
 		return ret;
+	}
+	
+	// commit to SharedPreferences
+	public void commitCatFilter() {
+		if ( fCatFilterMask == fCatFilterMaskApplied )
+			return;
+		
+		SharedPreferences.Editor editor = fSettings.edit();
+		editor.putInt( PREFS_CATMASK, fCatFilterMask );
+	    editor.commit();   // TODO: use apply() instead, requires API 9
+	    fCatFilterMaskApplied = fCatFilterMask;
 	}
 	
 	// return global map
@@ -125,12 +137,15 @@ public class MyData {
 		
 		// filter
 		for ( Map.Entry<String, HashMap<String, String>> entry : fDataMap.entrySet() ) {
+			String[] list = fContext.getResources().getStringArray(R.array.categories);
 			boolean valid = false;
-			for ( String cat : fCatFilter )
-				if ( entry.getValue().get("categories").contains(cat) ) {
+			for ( int mask = fCatFilterMask, i = 0; mask != 0 && i < list.length; mask >>>= 1, i++ ) {
+				if ( (mask & 1) == 0 ) continue;
+				if ( entry.getValue().get("categories").contains( list[i] ) ) {
 					valid = true;
 					break;
 				}
+			}
 			if ( valid )			
 				fDataList.add( entry.getValue() );
 		}
