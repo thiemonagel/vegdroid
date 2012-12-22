@@ -2,7 +2,6 @@ package de.thiemonagel.myapp;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.view.Menu;
 
 public class AboutActivity extends Activity {
 
