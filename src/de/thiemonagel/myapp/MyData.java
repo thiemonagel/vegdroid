@@ -35,20 +35,22 @@ import android.util.Log;
 
 // Singleton containing data to be displayed
 public class MyData {
+	private static final String                      PREFS_FILE    = "config";
+	private static final String                      PREFS_CATMASK = "CategoryMask";
+	private static final String                      LOG_TAG       = "VegDroid";
 
 	private static MyData                            fInstance = null;
+
+	private Context                                  fContext;   // required for location manager, among others
 	private int                                      fCatFilterMask;
 	private int                                      fCatFilterMaskApplied;  // last mask committed
 	private ArrayList<HashMap<String, String>>       fDataList;  // data currently to be displayed
 	private HashMap<String, HashMap<String, String>> fDataMap;   // cache of full information
-	private Context                                  fContext;   // required for location manager, among others
 	private String                                   fError;     // error message
 	private boolean                                  fkm;        // whether distances are to be displayed in km
 	private boolean                                  fLoaded;
 	private SharedPreferences                        fSettings;
 	
-	private static final String PREFS_FILE    = "config";
-	private static final String PREFS_CATMASK = "CategoryMask";
 
 	private MyData( Context c ) {
 		fDataList  = new ArrayList<HashMap<String, String>>();
@@ -60,7 +62,7 @@ public class MyData {
     	// derive preferred units from SIM card country
     	TelephonyManager tm = (TelephonyManager)fContext.getSystemService(Context.TELEPHONY_SERVICE);
     	String ISO = tm.getSimCountryIso().toLowerCase();
-	    Log.i( "MyApp", "SIM country ISO: " + ISO );
+	    Log.i( LOG_TAG, "SIM country ISO: " + ISO );
 	    
 	    // it seems that only USA and GB still use miles:
 	    // https://en.wikipedia.org/wiki/Imperial_units#Current_use_of_imperial_units
@@ -79,7 +81,7 @@ public class MyData {
     	fSettings             = c.getSharedPreferences( PREFS_FILE, Context.MODE_PRIVATE );
         fCatFilterMask        = fSettings.getInt( PREFS_CATMASK, -1 );
         fCatFilterMaskApplied = fCatFilterMask;
-	    Log.i( "MyApp", "Read CatFilterMask: " + fCatFilterMask );
+	    Log.d( LOG_TAG, "Read CatFilterMask: " + fCatFilterMask );
 	}
 	
 	// provide application context!
@@ -180,7 +182,7 @@ public class MyData {
 		LocationManager lMan = (LocationManager) fContext.getSystemService(Context.LOCATION_SERVICE);
 		List<String> lproviders = lMan.getProviders( false );  // true = enabled only
 		Location best = null;
-	    Log.i( "MyApp", lproviders.size() + " location providers found." );
+	    Log.d( LOG_TAG, lproviders.size() + " location providers found." );
 	    for ( String prov : lproviders ) {
 	    	Location l = lMan.getLastKnownLocation(prov);
 	
@@ -195,7 +197,7 @@ public class MyData {
 	    	} else {
 	    		logstr += "[empty]";
 	    	}
-	    	Log.i( "MyApp", logstr );
+	    	Log.d( LOG_TAG, logstr );
 	    	if ( l == null ) {
 	    		continue;
 	    	}
@@ -252,7 +254,7 @@ public class MyData {
 	    	return;
 	    	
 	    	// for testing
-	        //Log.i( "MyApp", "No location found." );
+	        //Log.i( LOG_TAG, "No location found." );
 	        //url += "0,0";
 	        //locationAccuracy = .75f;
 	    } else {
@@ -275,11 +277,11 @@ public class MyData {
 	    	roundMultiplier = 1;
 	    	roundDigits     = 0;
 	    }
-	    Log.i( "MyApp", "roundMultiplier: " + roundMultiplier );
+	    Log.d( LOG_TAG, "roundMultiplier: " + roundMultiplier );
 	    
 	    url += "?unit=km&distance=100&limit=50";
 	    
-	    Log.i( "MyApp", "Getting: " +url );
+	    Log.i( LOG_TAG, "Getting: " +url );
 	    HttpClient client = new DefaultHttpClient();
 	    HttpGet httpGet = new HttpGet( url );
 	    StringBuilder builder = new StringBuilder();
@@ -309,7 +311,7 @@ public class MyData {
 	        return;
 	    }
 	    
-	    Log.i( "MyApp", builder.toString() );
+	    Log.v( LOG_TAG, builder.toString() );
 	    
 	    Date now = new Date();
 	    try {
@@ -317,7 +319,7 @@ public class MyData {
 	        JSONArray entries = json.getJSONArray("entries");
 	        for ( int i = 0; i < entries.length(); i++ ) {
 	        	JSONObject entry = entries.getJSONObject(i);
-	//        	Log.i("MyApp", entry.getString("name") );
+	//        	Log.v( LOG_TAG, entry.getString("name") );
 	
 	        	HashMap<String, String> map = new HashMap<String, String>();
 	        	String keylist[] = {
@@ -344,7 +346,7 @@ public class MyData {
 		        		if ( closed.before(now) )
 		        			continue;
 	        		} catch (ParseException e) { 
-		            	Log.e("MyApp", "closed_date parse error!");
+		            	Log.e( LOG_TAG, "closed_date parse error!" );
 	        		}
 	        	}
 	        	
@@ -397,7 +399,7 @@ public class MyData {
 	            	try {
 	            		fd = Float.parseFloat(sd);
 	            	} catch (Throwable e) {};
-	            	map.put("pdistance", String.format("%10.3f", fd) );  // pricise distance in km, for sorting
+	            	map.put("pdistance", String.format("%10.3f", fd) );  // precise distance in km, for sorting
 	            	if ( !fkm ) fd /= 1.609344;  // international yard and pound treaty (1959)
 	            	fd = Math.round(fd*roundMultiplier) / (float) roundMultiplier;
 	            	if ( fd < 1f )
@@ -410,7 +412,7 @@ public class MyData {
 		            map.put("distance", sd);
 		            
 	            } catch (JSONException e) {
-	            	Log.e("MyApp", "uri missing!");
+	            	Log.e( LOG_TAG, "uri missing!" );
 	            	fError = "URI missing!";
 	            	return;
 	            }

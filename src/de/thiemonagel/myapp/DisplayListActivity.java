@@ -88,7 +88,6 @@ public class DisplayListActivity extends ListActivity {
                 // Starting new intent
                 Intent in = new Intent(getApplicationContext(), EntryActivity.class);
                 in.putExtra( "uri", uri );
-                Log.i( "MyApp", "putting extra uri: '" + uri + "'" );
                 startActivity(in);
             }
         });
@@ -184,11 +183,13 @@ public class DisplayListActivity extends ListActivity {
 
 // http://stackoverflow.com/questions/7380865/android-how-can-you-set-the-value-of-a-ratingbar-within-a-listadapter
 class MyBinder implements android.widget.SimpleAdapter.ViewBinder {
-    //@Override
+	private static final String LOG_TAG = "VegDroid";
+
+	//@Override
     public boolean setViewValue(View view, Object data, String textRepresentation) {
         if (view.getId() == R.id.ratingBar) {
             String stringval = (String) data;
-            Log.i( "MyApp", "rating: "+ stringval );
+            Log.v( LOG_TAG, "rating: "+ stringval );
             float ratingValue = 0f;
             try {
             	ratingValue = Float.parseFloat(stringval);

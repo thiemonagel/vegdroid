@@ -13,7 +13,6 @@ TODO
 * polish ListActivity and EntryActivity
 * test on more devices
 * check thread-safety
-* remove excessive logging
 * use gzip transport compression
 * use https for server contact as possible sensitive data (location) is transferred
 
@@ -25,6 +24,7 @@ BUGS
 
 DONE
 ====
+* remove excessive logging
 * add OK button to AboutActivity
 * decide on name and apply it everywhere
 * omit entries marked as closed

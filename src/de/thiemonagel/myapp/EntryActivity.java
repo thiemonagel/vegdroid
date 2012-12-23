@@ -14,19 +14,18 @@ import android.view.View;
 import android.widget.TextView;
 
 public class EntryActivity extends Activity {
+	private static final String LOG_TAG = "VegDroid";
 	
 	String                  furi;
 	HashMap<String, String> fData;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-    	Log.i( "MyApp", "EntryActivity.onCreate()" );
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry);
         
         Intent i = getIntent();
         furi = i.getStringExtra( "uri" );
-    	Log.i( "MyApp", "EntryActivity.onCreate() uri: " + furi );
     	fData = MyData.getInstance().getMap().get(furi);
 
     	{ 
@@ -68,7 +67,7 @@ public class EntryActivity extends Activity {
     }
     
     public void actionWebsite( View view ) {
-        Log.i( "MyApp", "actionWebsite()" );
+        Log.d( LOG_TAG, "actionWebsite()" );
         Uri uri = Uri.parse( fData.get("website") );
     	Intent intent = new Intent(Intent.ACTION_VIEW, uri);
     	startActivity(intent);
