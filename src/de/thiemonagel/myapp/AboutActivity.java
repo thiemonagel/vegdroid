@@ -1,6 +1,7 @@
 package de.thiemonagel.myapp;
 
 import android.os.Bundle;
+import android.view.View;
 import android.app.Activity;
 
 public class AboutActivity extends Activity {
@@ -20,4 +21,8 @@ public class AboutActivity extends Activity {
 	}
 	*/
 
+    public void OK( View view ) {
+    	finish();
+    }
+	
 }
