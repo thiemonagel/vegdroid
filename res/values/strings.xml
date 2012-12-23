@@ -13,7 +13,7 @@
     <string name="title_activity_display_list">VegDroid</string>
     <string name="title_activity_list2">VegDroid</string>
     <string name="title_activity_entry">VegDroid</string>
-    <string name="version_string">0.1</string>
+    <string name="version_string">0.1.1</string>
 
     <string-array name="categories">
         <item>Restaurant</item>
