@@ -15,6 +15,7 @@ TODO
 * check thread-safety
 * use gzip transport compression
 * use https for server contact as possible sensitive data (location) is transferred
+* migrate to entry class instead of hash
 
 BUGS
 ====
