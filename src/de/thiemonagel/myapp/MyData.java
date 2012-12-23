@@ -284,7 +284,9 @@ public class MyData {
 	    }
 	    Log.d( LOG_TAG, "roundMultiplier: " + roundMultiplier );
 	    
-	    url += "?unit=km&distance=100&limit=50";
+	    // By default, the website imposes a 5km limit, but I prefer to show the
+	    // closest venues, even if they are thousands of miles away.
+	    url += "?unit=km&distance=100000&limit=50";
 	    
 	    Log.i( LOG_TAG, "Getting: " +url );
 	    HttpClient client = new DefaultHttpClient();
