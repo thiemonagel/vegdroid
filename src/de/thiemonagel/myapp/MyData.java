@@ -76,7 +76,7 @@ public class MyData {
     		fkm = true;
     	
     	// load from SharedPreferences
-    	fSettings             = c.getSharedPreferences( PREFS_FILE, c.MODE_PRIVATE );
+    	fSettings             = c.getSharedPreferences( PREFS_FILE, Context.MODE_PRIVATE );
         fCatFilterMask        = fSettings.getInt( PREFS_CATMASK, -1 );
         fCatFilterMaskApplied = fCatFilterMask;
 	    Log.i( "MyApp", "Read CatFilterMask: " + fCatFilterMask );
