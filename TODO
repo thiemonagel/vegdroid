@@ -10,6 +10,8 @@ MISSING FEATURES
 
 TODO
 ====
+* polish ListActivity and EntryActivity
+* add OK button to AboutActivity
 * test on more devices
 * check thread-safety
 * remove excessive logging
