@@ -35,6 +35,8 @@ import android.util.Log;
 
 // Singleton containing data to be displayed
 public class MyData {
+	private static final boolean                     DEBUG         = false;
+	
 	private static final String                      PREFS_FILE    = "config";
 	private static final String                      PREFS_CATMASK = "CategoryMask";
 	private static final String                      LOG_TAG       = "VegDroid";
@@ -250,13 +252,16 @@ public class MyData {
 	    String url = "http://www.vegguide.org/search/by-lat-long/";
     	float locationAccuracy;
 	    if ( best == null ) {
-	    	fError = "Location could not be determined!";
-	    	return;
-	    	
-	    	// for testing
-	        //Log.i( LOG_TAG, "No location found." );
-	        //url += "0,0";
-	        //locationAccuracy = .75f;
+	    	if ( DEBUG ) {
+	    		// set bogus location for debugging
+		        Log.i( LOG_TAG, "No location found." );
+		        url += "0,0";
+		        locationAccuracy = .75f;
+	    	} else {
+	    		// abort with error
+		    	fError = "Location could not be determined!";
+		    	return;
+	    	}
 	    } else {
 			url += best.getLatitude() + "," + best.getLongitude();
 			locationAccuracy = best.getAccuracy() / ( fkm ? 1000f : 1609.344f ); 
