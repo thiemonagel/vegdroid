@@ -47,8 +47,8 @@ public class MyData {
 	private boolean                                  fLoaded;
 	private SharedPreferences                        fSettings;
 	
-	public static final String PREFS_FILE    = "config";
-	public static final String PREFS_CATMASK = "CategoryMask"; 
+	private static final String PREFS_FILE    = "config";
+	private static final String PREFS_CATMASK = "CategoryMask";
 
 	private MyData( Context c ) {
 		fDataList  = new ArrayList<HashMap<String, String>>();
