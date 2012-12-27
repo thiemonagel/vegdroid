@@ -43,25 +43,25 @@ public class MyData {
 
 	private static MyData                            fInstance = null;
 
-	private Context                                  fContext;   // required for location manager, among others
+	private Context                                  fContext;               // required for location manager, among others
 	private int                                      fCatFilterMask;
 	private int                                      fCatFilterMaskApplied;  // last mask committed
-	private ArrayList<HashMap<String, String>>       fDataList;  // data currently to be displayed
-	private HashMap<String, HashMap<String, String>> fDataMap;   // cache of full information
-	private String                                   fError;     // error message
+	private ArrayList<HashMap<String, String>>       fDataList;              // data currently to be displayed
+	private HashMap<String, HashMap<String, String>> fDataMap;               // cache of full information
+	private String                                   fError;                 // error message
 	private int                                      fNumEntryLimit;         // number of entries to be pulled from server 
-	private boolean                                  fkm;        // whether distances are to be displayed in km
+	private boolean                                  fkm;                    // whether distances are to be displayed in km
 	private boolean                                  fLoaded;
 	private SharedPreferences                        fSettings;
 	
 
 	private MyData( Context c ) {
-		fDataList  = new ArrayList<HashMap<String, String>>();
-        fDataMap   = new HashMap<String,HashMap<String, String>>();
-		fContext   = c;
-        fError     = "";
+		fDataList      = new ArrayList<HashMap<String, String>>();
+        fDataMap       = new HashMap<String,HashMap<String, String>>();
+		fContext       = c;
+        fError         = "";
         fNumEntryLimit = 50;
-        fLoaded    = false;
+        fLoaded        = false;
         
     	// derive preferred units from SIM card country
     	TelephonyManager tm = (TelephonyManager)fContext.getSystemService(Context.TELEPHONY_SERVICE);
