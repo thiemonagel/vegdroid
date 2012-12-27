@@ -49,6 +49,7 @@ public class MyData {
 	private ArrayList<HashMap<String, String>>       fDataList;  // data currently to be displayed
 	private HashMap<String, HashMap<String, String>> fDataMap;   // cache of full information
 	private String                                   fError;     // error message
+	private int                                      fNumEntryLimit;         // number of entries to be pulled from server 
 	private boolean                                  fkm;        // whether distances are to be displayed in km
 	private boolean                                  fLoaded;
 	private SharedPreferences                        fSettings;
@@ -59,6 +60,7 @@ public class MyData {
         fDataMap   = new HashMap<String,HashMap<String, String>>();
 		fContext   = c;
         fError     = "";
+        fNumEntryLimit = 50;
         fLoaded    = false;
         
     	// derive preferred units from SIM card country
@@ -286,7 +288,7 @@ public class MyData {
 	    
 	    // By default, the website imposes a 5km limit, but I prefer to show the
 	    // closest venues, even if they are thousands of miles away.
-	    url += "?unit=km&distance=100000&limit=50";
+	    url += "?unit=km&distance=100000&limit=" + fNumEntryLimit;
 	    
 	    Log.i( LOG_TAG, "Getting: " +url );
 	    HttpClient client = new DefaultHttpClient();
