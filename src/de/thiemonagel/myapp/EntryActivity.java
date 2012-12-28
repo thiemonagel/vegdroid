@@ -1,6 +1,8 @@
 package de.thiemonagel.myapp;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 public class EntryActivity extends Activity {
@@ -32,7 +35,14 @@ public class EntryActivity extends Activity {
     	{ 
     		TextView tv = (TextView) findViewById(R.id.name);
     		tv.setText( fData.get("name") );
-    	}{ 
+    	}{
+    		RatingBar rb = (RatingBar) findViewById(R.id.ratingBar2);
+            float val = 0f;
+            try {
+            	val = Float.parseFloat( fData.get("weighted_rating") );
+            } catch (Throwable e) {};
+            rb.setRating( val );
+    	}{
     		TextView tv = (TextView) findViewById(R.id.veg_level_description);
     		tv.setText( fData.get("veg_level_description") );
     	}{ 
@@ -46,7 +56,8 @@ public class EntryActivity extends Activity {
     		if ( fData.get("website").equals("") )
     			but.setVisibility( View.GONE );
     		else
-    			but.setText( "Visit " + fData.get("website") );
+    			//but.setText( "Visit " + fData.get("website") );
+    			but.setText( "Visit web site" );
     	}{ 
     		TextView tv = (TextView) findViewById(R.id.address);
     		String n  = fData.get("neighborhood");
@@ -54,11 +65,12 @@ public class EntryActivity extends Activity {
     		String a2 = fData.get("address2");
     		String c  = fData.get("city");
     		String pc = fData.get("postal_code");
-    		String a  = ( n.equals("")  ? "" : "<em>" + n + "</em>" );
+    		String a  = "";
     		a        += ( a1.equals("") ? "" : (a.equals("")?"":"<br />") + a1 );
     		a        += ( a2.equals("") ? "" : (a.equals("")?"":"<br />") + a2 );
     		a        += ( c.equals("")  ? "" : (a.equals("")?"":"<br />") + c  );
     		a        += ( pc.equals("") ? "" : (a.equals("")?"":"<br />") + pc );
+    		a        += ( n.equals("")  ? "" : (a.equals("")?"":"<br />") + "<i>" + n + "</i>" );
     		if ( a.equals("") )
     			tv.setVisibility( View.GONE );
     		else
@@ -81,6 +93,36 @@ public class EntryActivity extends Activity {
         return true;
     }
     
+    public void clickMap( View view ) {
+		String n  = fData.get("name");
+		String a1 = fData.get("address1");
+		String a2 = fData.get("address2");
+		String c  = fData.get("city");
+		String pc = fData.get("postal_code");
+		/*  abandoned this approach because of library loading problems
+		import org.apache.commons.lang.StringUtils;
+		List<String> items = new ArrayList<String>();
+		if ( !n.equals("")  ) items.add(n);
+		if ( !a1.equals("") ) items.add(a1);
+		if ( !a2.equals("") ) items.add(a2);
+		if ( !c.equals("")  ) items.add(c);
+		if ( !pc.equals("") ) items.add(pc);
+		String params = StringUtils.join(items.toArray(), ',' );
+		*/
+		String a  = "";
+		a        += ( a1.equals("") ? "" : (a.equals("")?"":", ") + a1 );
+		a        += ( a2.equals("") ? "" : (a.equals("")?"":", ") + a2 );
+		a        += ( c.equals("")  ? "" : (a.equals("")?"":", ") + c  );
+		a        += ( pc.equals("") ? "" : (a.equals("")?"":", ") + pc );
+
+		// the name of the venue is not included in the query string because
+		// it seems to cause problems when Google isn't aware of it
+		String uri = "geo:0,0?q=" + a;
+    	Intent intent = new Intent( Intent.ACTION_VIEW );
+    	intent.setData( Uri.parse(uri) );
+    	startActivity(intent);
+    }
+
     public void clickPhone( View view ) {
     	String uri = "tel:" + fData.get("phone");
     	Intent intent = new Intent( Intent.ACTION_DIAL );
