@@ -10,7 +10,9 @@ MISSING FEATURES
 
 TODO
 ====
-* polish ListActivity and EntryActivity
+* improve ListActivity and EntryActivity
+  o add opening times
+  o add user's reviews
 * test on more devices
 * check thread-safety
 * use gzip transport compression
@@ -20,7 +22,7 @@ TODO
 BUGS
 ====
 * rounding of yards is broken
-* crashes when rotating while polling server
+* crashes when rotating screen while polling server
 * when loading without network connect, error appears, but when
   establishing network and retrying, the error persists, this should
   be fixed
