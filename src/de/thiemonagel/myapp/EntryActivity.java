@@ -1,8 +1,6 @@
 package de.thiemonagel.myapp;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -94,7 +92,7 @@ public class EntryActivity extends Activity {
     }
     
     public void clickMap( View view ) {
-		String n  = fData.get("name");
+		//String n  = fData.get("name");
 		String a1 = fData.get("address1");
 		String a2 = fData.get("address2");
 		String c  = fData.get("city");
