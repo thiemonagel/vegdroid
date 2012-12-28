@@ -1,4 +1,4 @@
-package de.thiemonagel.myapp;
+package de.thiemonagel.vegdroid;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package de.thiemonagel.myapp;
+package de.thiemonagel.vegdroid;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

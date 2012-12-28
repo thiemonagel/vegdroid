@@ -1,4 +1,4 @@
-package de.thiemonagel.myapp;
+package de.thiemonagel.vegdroid;
 
 import android.os.Bundle;
 import android.view.View;
