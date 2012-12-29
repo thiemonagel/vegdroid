@@ -51,7 +51,8 @@ public class MyData {
 	private String                                   fError;                 // error message
 	private int                                      fNumEntryLimit;         // number of entries to be pulled from server 
 	private boolean                                  fkm;                    // whether distances are to be displayed in km
-	private boolean                                  fLoaded;
+	private Location                                 fLastLoc;               // last location for which data have been loaded
+	private Date                                     fLastDate;              // last time data have been loaded
 	private SharedPreferences                        fSettings;
 	
 
@@ -61,7 +62,8 @@ public class MyData {
 		fContext       = c;
         fError         = "";
         fNumEntryLimit = 50;
-        fLoaded        = false;
+        fLastLoc       = null;
+        fLastDate      = null;
         
     	// derive preferred units from SIM card country
     	TelephonyManager tm = (TelephonyManager)fContext.getSystemService(Context.TELEPHONY_SERVICE);
@@ -178,9 +180,6 @@ public class MyData {
 	
 	// pull data from vegguide.org and decode JSON into fDataMap
     protected void Load() {
-    	// IIRC this is to prevent re-loading after screen rotation
-    	if ( fLoaded )
-    		return;
     	
 		// find location
 		LocationManager lMan = (LocationManager) fContext.getSystemService(Context.LOCATION_SERVICE);
@@ -202,6 +201,7 @@ public class MyData {
 	    		logstr += "[empty]";
 	    	}
 	    	Log.d( LOG_TAG, logstr );
+	    	
 	    	if ( l == null ) {
 	    		continue;
 	    	}
@@ -250,7 +250,17 @@ public class MyData {
 	    		}
 	    	}
 	    }
-	    
+
+	    // skip loading of data when location has changed less than 50 meters and previously received
+	    // data is less than one day old
+	    Date now = new Date();
+	    if ( fLastLoc != null && fLastDate != null
+	    	 && fLastLoc.distanceTo(best) < 50f
+	    	 && (now.getTime()-fLastDate.getTime()) /1000 /3600 /24 == 0 )
+	    	return;
+	    fLastLoc  = best;
+	    fLastDate = now;
+
 	    String url = "http://www.vegguide.org/search/by-lat-long/";
     	float locationAccuracy;
 	    if ( best == null ) {
@@ -322,7 +332,6 @@ public class MyData {
 	    
 	    Log.v( LOG_TAG, builder.toString() );
 	    
-	    Date now = new Date();
 	    try {
 	    	JSONObject json = new JSONObject(builder.toString());
 	        JSONArray entries = json.getJSONArray("entries");
@@ -431,7 +440,5 @@ public class MyData {
 	        fError = "JSONException";
 	        return;
 	    }
-	    
-	    fLoaded = true;
     }
 }
