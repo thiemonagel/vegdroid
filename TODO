@@ -24,6 +24,7 @@ TODO
 
 BUGS
 ====
+* crash when starting map intent when maps aren't installed
 * crashes when rotating screen while polling server
 * when loading without network connect, error appears, but when
   establishing network and retrying, the error persists, this should
