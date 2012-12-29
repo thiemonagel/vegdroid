@@ -1,3 +1,7 @@
+0.1.4 (alpha)
+Work around bug in faketouch semantics which caused VegDroid to be
+uninstallable on some devices.
+
 0.1.3 (alpha)
 Minor fixes and improvements.
 
