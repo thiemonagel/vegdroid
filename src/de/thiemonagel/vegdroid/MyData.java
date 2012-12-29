@@ -40,6 +40,8 @@ public class MyData {
 	private static final String                      PREFS_FILE    = "config";
 	private static final String                      PREFS_CATMASK = "CategoryMask";
 	private static final String                      LOG_TAG       = "VegDroid";
+	
+	private static final int                         YARDS         = 1760;   // 1760 yards in a mile, who invented that?
 
 	private static MyData                            fInstance = null;
 
@@ -279,19 +281,19 @@ public class MyData {
 			locationAccuracy = best.getAccuracy() / ( fkm ? 1000f : 1609.344f ); 
 	    }
 	    
-	    int roundMultiplier;  // for km/miles
 	    int roundDigits;
+	    float roundMultiplier;  // for km/miles
 	    if ( locationAccuracy < .015f ) {
-	    	roundMultiplier = 1000;
+	    	roundMultiplier = ( fkm ? 1000f : YARDS );
 	    	roundDigits     = 3;
 	    } else if ( locationAccuracy < .15f ) {
-	    	roundMultiplier = 100;
+	    	roundMultiplier = ( fkm ? 100f : YARDS/10f );
 	    	roundDigits     = 2;
 	    } else if ( locationAccuracy < 1.5f ) {
-	    	roundMultiplier = 10;
+	    	roundMultiplier = ( fkm ? 10f : YARDS/100f );
 	    	roundDigits     = 1;
 	    } else {
-	    	roundMultiplier = 1;
+	    	roundMultiplier = 1f;
 	    	roundDigits     = 0;
 	    }
 	    Log.d( LOG_TAG, "roundMultiplier: " + roundMultiplier );
@@ -419,12 +421,12 @@ public class MyData {
 	            	} catch (Throwable e) {};
 	            	map.put("pdistance", String.format("%10.3f", fd) );  // precise distance in km, for sorting
 	            	if ( !fkm ) fd /= 1.609344;  // international yard and pound treaty (1959)
-	            	fd = Math.round(fd*roundMultiplier) / (float) roundMultiplier;
+	            	fd = Math.round(fd*roundMultiplier) / roundMultiplier;
 	            	if ( fd < 1f )
 	            		if ( fkm )
 	            			sd = String.format( "%.0f m", fd*1000 );
 	            		else
-	            			sd = String.format( "%.0f yds", fd*1760 );
+	            			sd = String.format( "%.0f yds", fd*YARDS );
 	            	else
 	            		sd = String.format( "%."+roundDigits+"f %s", fd, ( fkm ? " km" : " miles" ) );
 		            map.put("distance", sd);
