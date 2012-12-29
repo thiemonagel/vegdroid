@@ -269,7 +269,8 @@ public class MyData {
 	    	if ( DEBUG ) {
 	    		// set bogus location for debugging
 		        Log.i( LOG_TAG, "No location found." );
-		        url += "0,0";
+		        //url += "0,0";
+		        url += "48.139126,11.580186";
 		        locationAccuracy = .75f;
 	    	} else {
 	    		// abort with error
