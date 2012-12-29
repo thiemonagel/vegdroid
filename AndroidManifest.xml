@@ -30,9 +30,15 @@
     <uses-feature android:name="android.hardware.location" android:required="true" />
     <uses-feature android:name="android.hardware.location.gps" android:required="false" />
     
-    <!-- by default, a touchscreen is required, but touchscreen emulation should work just as well -->
+    <!--
+    	By default, a touchscreen is required, but touchscreen emulation should work just as well.
+    	Unfortunately, reality doesn't seem to live up to the promise that 'faketouch' is a true
+    	superset of 'touchscreen', cf.  
+    	http://www.saschahlusiak.de/2012/10/android-hardware-faketouch-vs-android-hardware-touchscreen/
+    	Given the options of either not allowing installation on faketouch devices or allowing
+    	installation on all devices independent of touch (emulation), I chose the latter.
+    -->
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
-    <uses-feature android:name="android.hardware.faketouch" android:required="true" />
     
     <application
         android:icon="@drawable/ic_launcher"
