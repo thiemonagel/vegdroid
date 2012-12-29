@@ -5,8 +5,9 @@ MISSING FEATURES
 * implement opening-time filtering
 * implement map view
 * adapt layout to tablets
-* update list dynamically when location is changing
-  or, as a poor man's solution, add "Reload" and "More" buttons
+* update list when location is changing
+  o request location provider callbacks
+  o or, as a poor man's solution, add "Reload" and "More" buttons
 * settings for miles/km preference
 
 TODO
@@ -14,6 +15,7 @@ TODO
 * improve ListActivity and EntryActivity
   o add opening times
   o add user's reviews
+* remove MainActivity
 * test on more devices
 * check thread-safety
 * use gzip transport compression
@@ -27,6 +29,7 @@ BUGS
 * when loading without network connect, error appears, but when
   establishing network and retrying, the error persists, this should
   be fixed
+* remove blinking "Loading" notice upon screen rotation
 
 DONE
 ====
