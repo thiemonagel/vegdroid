@@ -1,9 +1,11 @@
 MISSING FEATURES
 ================
+* implement map view
 * add search box
 * implement veg-level filtering
 * implement opening-time filtering
-* implement map view
+* implement list sorting by name, distance, rating...
+* add "food only" option somewhere?
 * adapt layout to tablets
 * update list when location is changing
   o request location provider callbacks
@@ -13,14 +15,19 @@ MISSING FEATURES
 TODO
 ====
 * improve ListActivity and EntryActivity
-  o add opening times
-  o add user's reviews
+  o add entries' opening times
+  o add users' reviews
 * remove MainActivity
 * test on more devices
 * check thread-safety
-* use gzip transport compression
-* use https for server contact as possible sensitive data (location) is transferred
+* network
+  o switch to HttpURLConnection as recommended here:
+    http://android-developers.blogspot.de/2011/09/androids-http-clients.html
+    https://developer.android.com/training/basics/network-ops/connecting.html
+  o use gzip transport compression
+  o use https for server contact as possible sensitive data (location) is transferred
 * migrate to entry class instead of hash
+* submit to F-droid store? 
 
 BUGS
 ====
