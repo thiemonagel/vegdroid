@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
         getMenuInflater().inflate(R.menu.activity_main, menu);
         return true;
     }
-    
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -29,16 +29,16 @@ public class MainActivity extends Activity {
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
             case R.id.menu_about:
-            	Intent intent = new Intent(this, AboutActivity.class);
-            	startActivity(intent);
-            	return true;
+                Intent intent = new Intent(this, AboutActivity.class);
+                startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
     public void Start( View view ) {
-    	Intent intent = new Intent(this, DisplayListActivity.class);
-    	startActivity(intent);
+        Intent intent = new Intent(this, DisplayListActivity.class);
+        startActivity(intent);
     }
 }

@@ -31,12 +31,12 @@
     <string name="text_about"><b>About</b>
 \n
 \nVegDroid (working title) is an experimental Android app to display nearby entries (mostly
-restaurants) of http://vegguide.org.  It is provided free of charge. 
+restaurants) of http://vegguide.org.  It is provided free of charge.
 \n
 \n<b>Privacy</b>
 \n
 \nEach time nearby venues are listed, the current location is transferred to the vegguide.org server.  No personally identifiable
-information is transmitted except the network addresses (eg. IP address) as required by the network protocols. 
+information is transmitted except the network addresses (eg. IP address) as required by the network protocols.
 \n
 \n<b>Source Code</b>
 \n
@@ -79,5 +79,5 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</string>
-    
+
 </resources>
