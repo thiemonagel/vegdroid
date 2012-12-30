@@ -315,6 +315,7 @@ public class MyData {
 	      int statusCode = statusLine.getStatusCode();
 	      if (statusCode == 200) {
 	        HttpEntity entity = response.getEntity();
+	        Log.i( LOG_TAG, "Received " + (entity.getContentLength()>>10) + " kiB of entry data." );
 	        InputStream content = entity.getContent();
 	        BufferedReader reader = new BufferedReader(new InputStreamReader(content));
 	        String line;
