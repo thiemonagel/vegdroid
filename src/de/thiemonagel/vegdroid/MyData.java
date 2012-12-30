@@ -353,7 +353,8 @@ public class MyData {
 	        			"veg_level", "veg_level_description", "website",
 	        			"weighted_rating" }; 
 
-	        	// missing keys are set to empty strings
+	        	// Missing keys are set to empty strings, as the API specifies:
+	        	// "If a key's value would be null, an empty string, or an empty array, it is always omitted." 
 	        	for ( String key : keylist ) {
 		        	String s = "";
 		        	try {
