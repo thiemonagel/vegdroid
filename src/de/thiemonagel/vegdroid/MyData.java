@@ -21,6 +21,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.CoreProtocolPNames;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -304,7 +305,8 @@ public class MyData {
 	    url += "?unit=km&distance=100000&limit=" + fNumEntryLimit;
 	    
 	    Log.i( LOG_TAG, "Getting: " +url );
-	    HttpClient client = new DefaultHttpClient();
+	    HttpClient client = new DefaultHttpClient();  // Apache HTTP client
+	    client.getParams().setParameter( CoreProtocolPNames.USER_AGENT, R.string.app_name + " " + R.string.version_string );
 	    HttpGet httpGet = new HttpGet( url );
 	    StringBuilder builder = new StringBuilder();
 	    try {
