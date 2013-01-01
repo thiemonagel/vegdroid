@@ -5,47 +5,47 @@
     android:versionCode="5"
     android:versionName="@string/version_string" >
 
-	<!--
-	    current version distribution: https://developer.android.com/about/dashboards/index.html
-	    (everything before Eclair has 0.4% market share as of 2012-12-03) 
-	     7: Eclair 2.1
-	     8: Froyo  2.2
-	     9: Gingerbread 2.3-2.3.2 (almost unused)
-	    10: Gingerbread 2.3.3-2.3.7
-	    15: Ice Cream Sandwich 4.0
-	    16: Jelly Bean 4.1
-	    17: Jelly Bean 4.2
-	-->
+    <!--
+        current version distribution: https://developer.android.com/about/dashboards/index.html
+        (everything before Eclair has 0.4% market share as of 2012-12-03)
+        7: Eclair 2.1
+        8: Froyo  2.2
+        9: Gingerbread 2.3-2.3.2 (almost unused)
+        10: Gingerbread 2.3.3-2.3.7
+        15: Ice Cream Sandwich 4.0
+        16: Jelly Bean 4.1
+        17: Jelly Bean 4.2
+    -->
 
-	<!-- "targetSdkVersion indicates the highest version of Android with which you have tested with your application." -->
+    <!-- "targetSdkVersion indicates the highest version of Android with which you have tested with your application." -->
     <uses-sdk
         android:minSdkVersion="7"
         android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    
+
     <!-- uses-permission ACCESS_FINE_LOCATION implies uses-feature android.hardware.location.gps,
          but that seems overzealous to me, so a more suitable requirement is set below -->
     <uses-feature android:name="android.hardware.location" android:required="true" />
     <uses-feature android:name="android.hardware.location.gps" android:required="false" />
-    
+
     <!--
-    	By default, a touchscreen is required, but touchscreen emulation should work just as well.
-    	Unfortunately, reality doesn't seem to live up to the promise that 'faketouch' is a true
-    	superset of 'touchscreen', cf.  
-    	http://www.saschahlusiak.de/2012/10/android-hardware-faketouch-vs-android-hardware-touchscreen/
-    	Given the options of either not allowing installation on faketouch devices or allowing
-    	installation on all devices independent of touch (emulation), I chose the latter.
+        By default, a touchscreen is required, but touchscreen emulation should work just as well.
+        Unfortunately, reality doesn't seem to live up to the promise that 'faketouch' is a true
+        superset of 'touchscreen', cf.
+        http://www.saschahlusiak.de/2012/10/android-hardware-faketouch-vs-android-hardware-touchscreen/
+        Given the options of either not allowing installation on faketouch devices or allowing
+        installation on all devices independent of touch (emulation), I chose the latter.
     -->
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
-    
+
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         android:allowBackup="false" >
-        
+
         <activity
             android:name="de.thiemonagel.vegdroid.MainActivity"
             android:label="@string/title_activity_main" >
