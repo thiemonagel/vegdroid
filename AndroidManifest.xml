@@ -25,10 +25,16 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    <!-- uses-permission ACCESS_FINE_LOCATION implies uses-feature android.hardware.location.gps,
-         but that seems overzealous to me, so a more suitable requirement is set below -->
-    <uses-feature android:name="android.hardware.location" android:required="true" />
-    <uses-feature android:name="android.hardware.location.gps" android:required="false" />
+    <!--
+         uses-permission ACCESS_FINE_LOCATION implies uses-feature android.hardware.location.gps,
+         but that seems overzealous to me, so a more suitable requirement is set below
+    -->
+    <uses-feature
+        android:name="android.hardware.location"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false" />
 
     <!--
         By default, a touchscreen is required, but touchscreen emulation should work just as well.
@@ -38,14 +44,15 @@
         Given the options of either not allowing installation on faketouch devices or allowing
         installation on all devices independent of touch (emulation), I chose the latter.
     -->
-    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
 
     <application
+        android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:allowBackup="false" >
-
+        android:theme="@style/AppTheme" >
         <activity
             android:name="de.thiemonagel.vegdroid.MainActivity"
             android:label="@string/title_activity_main" >
