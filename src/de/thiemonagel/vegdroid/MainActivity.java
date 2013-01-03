@@ -24,12 +24,17 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
         switch (item.getItemId()) {
             case android.R.id.home:  // no idea what this is for
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
             case R.id.menu_about:
-                Intent intent = new Intent(this, AboutActivity.class);
+                intent = new Intent(this, AboutActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.menu_map:
+                intent = new Intent(this, MapActivity.class);
                 startActivity(intent);
                 return true;
             default:

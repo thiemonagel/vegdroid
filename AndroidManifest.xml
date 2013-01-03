@@ -109,6 +109,7 @@
             android:label="@string/title_activity_about" >
         </activity>
 
+        <!-- It seems to be possible to specify several keys without ill-effects. -->
         <!-- Google Maps API v2 key, release certificate FF:35:CA:4D:71:EA:BE:8D:E6:99:B8:F8:82:01:BA:F4:11:54:30:73 -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
@@ -119,6 +120,10 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyB9IYt3oTaAuGIE3NWYu3c9gl-BClLtTUg" />
 
+        <activity
+            android:name="de.thiemonagel.vegdroid.MapActivity"
+            android:label="@string/title_activity_map" >
+        </activity>
     </application>
 
 </manifest>
