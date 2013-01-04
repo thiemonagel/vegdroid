@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -23,8 +22,6 @@ public class AboutActivity extends Activity {
         // https://developers.google.com/maps/documentation/android/intro
         {
             TextView tv = (TextView) findViewById(R.id.aboutText);
-            String s = getString(R.string.text_about);
-            Log.d( LOG_TAG, "About string: " + s );
             tv.setText( Html.fromHtml(getString(R.string.text_about)) );
             tv.setMovementMethod( LinkMovementMethod.getInstance() );
         }{
