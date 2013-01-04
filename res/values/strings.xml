@@ -28,48 +28,47 @@
         <item>Other</item>
     </string-array>
 
-    <string name="text_about"><b>About</b>
-\n
-\nVegDroid is an experimental Android app to display nearby entries (mostly
-restaurants) of http://vegguide.org.  It is provided free of charge.
-\n
-\n<b>Privacy</b>
-\n
-\nEach time nearby venues are listed, the current location is transferred to the vegguide.org server.  No personally identifiable
-information is transmitted except the network addresses (eg. IP address) as required by the network protocols.
-\n
-\n<b>Source Code</b>
-\n
-\nThe sources are accessible via https://github.com/thiemonagel/vegdroid.  Patches and pull requests are welcome!
-\n
-\n<b>Content License: CC BY-SA 3.0 (US)</b>
-\n
-\nThe contents shown inside this app, including the VegGuide "lettuce" artwork,
+    <string name="text_about"><![CDATA[<h2>About</h2>
+<p>VegDroid is an experimental Android app to display nearby entries (mostly
+restaurants) of <a href="http://vegguide.org">http://vegguide.org</a>.  It
+is provided free of charge.</p>
+
+<h2>Privacy</h2>
+<p>Each time nearby venues are listed, the current location is transferred to
+the vegguide.org server.  No personally identifiable information is transmitted
+except the network addresses (eg. IP address) as required by the network protocols.</p>
+
+<h2>Source Code</h2>
+<p>The sources are accessible via
+<a href="https://github.com/thiemonagel/vegdroid">https://github.com/thiemonagel/vegdroid</a>.
+Patches and pull requests are welcome!</p>
+
+<h2>Content License: CC BY-SA 3.0 (US)</h2>
+
+<p>The contents shown inside this app, including the VegGuide "lettuce" artwork,
 are licensed under CC BY-SA 3.0 (United States) by their respective
-copyright holders.
-\n
-\n<b>App License: BSD 3-clause</b>
-\n
-\nFor the app itself, the following applies:
-\n
-\nCopyright © 2012, Thiemo Nagel
-\nAll rights reserved.
-\n
-\nRedistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-\n
-\nRedistributions of source code must retain the above copyright notice,
-this list of conditions and the following disclaimer.
-\n
-\nRedistributions in binary form must reproduce the above copyright notice,
+copyright holders.</p>
+
+<h2>App License: BSD 3-clause</h2>
+<p>For the app itself, the following applies:</p>
+<p>Copyright © 2012, Thiemo Nagel<br />
+All rights reserved.</p>
+
+<p>Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:</p>
+
+<p>Redistributions of source code must retain the above copyright notice,
+this list of conditions and the following disclaimer.</p>
+
+<p>Redistributions in binary form must reproduce the above copyright notice,
 this list of conditions and the following disclaimer in the documentation
-and/or other materials provided with the distribution.
-\n
-\nNeither the name of VegDroid nor the names of its contributors may be used
+and/or other materials provided with the distribution.</p>
+
+<p>Neither the name of VegDroid nor the names of its contributors may be used
 to endorse or promote products derived from this software without specific
-prior written permission.
-\n
-\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+prior written permission.</p>
+
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
@@ -78,6 +77,9 @@ DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
 SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</string>
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+
+<h2>Google Maps Legal Notices</h2>
+<p>The following attribution text applies to the Google Maps Android API:</p>]]></string>
 
 </resources>
