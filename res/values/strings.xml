@@ -11,7 +11,6 @@
     <string name="title_activity_about">About</string>
     <string name="title_activity_main">VegDroid</string>
     <string name="title_activity_display_list">VegDroid</string>
-    <string name="title_activity_list2">VegDroid</string>
     <string name="title_activity_entry">VegDroid</string>
     <string name="version_string">0.1.4 (alpha)</string>
 
@@ -30,7 +29,7 @@
 
     <string name="text_about"><b>About</b>
 \n
-\nVegDroid (working title) is an experimental Android app to display nearby entries (mostly
+\nVegDroid is an experimental Android app to display nearby entries (mostly
 restaurants) of http://vegguide.org.  It is provided free of charge.
 \n
 \n<b>Privacy</b>
