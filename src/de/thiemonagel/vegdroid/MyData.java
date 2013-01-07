@@ -73,13 +73,17 @@ public class MyData {
         String ISO = tm.getSimCountryIso().toLowerCase();
         Log.i( LOG_TAG, "SIM country ISO: " + ISO );
 
-        // it seems that only USA and GB still use miles:
+        // it seems that only USA, GB, Liberia and Burma still use miles:
         // https://en.wikipedia.org/wiki/Imperial_units#Current_use_of_imperial_units
-        if (    ISO.equals("gb")
+        // https://www.cia.gov/library/publications/the-world-factbook/appendix/appendix-g.html
+        // https://en.wikipedia.org/wiki/Burmese_units_of_measurement
+        if (    ISO.equals("gb")   // Great Britain
              || ISO.equals("io")   // British Indian Ocean Territory
-             || ISO.equals("uk")   // bad iso code, checking it nevertheless, just in case...
+             || ISO.equals("lr")   // Liberia
+             || ISO.equals("mm")   // Burma
+             || ISO.equals("uk")   // bad ISO code, checking it nevertheless, just in case...
              || ISO.equals("um")   // U.S. Minor Outlying Islands
-             || ISO.equals("us")
+             || ISO.equals("us")   // U.S.A.
              || ISO.equals("vg")   // British Virgin Islands
              || ISO.equals("vi") ) // U.S. Virgin Islands
             fkm = false;
