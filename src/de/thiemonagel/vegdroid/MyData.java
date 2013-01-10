@@ -124,6 +124,14 @@ public class MyData {
             fCatFilterMask &= ~(1<<index);
     }
 
+    public void setCatFilter( int mask ) {
+        fCatFilterMask = mask;
+    }
+
+    public int getCatFilter() {
+        return fCatFilterMask;
+    }
+
     public boolean[] getCatFilterBool() {
         String[] list = fContext.getResources().getStringArray(R.array.categories);
         int len = list.length;
