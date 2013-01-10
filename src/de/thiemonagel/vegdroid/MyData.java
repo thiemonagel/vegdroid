@@ -97,12 +97,18 @@ public class MyData {
         Log.d( LOG_TAG, "Read CatFilterMask: " + fCatFilterMask );
     }
 
-    // provide application context!
-    public static void initInstance( Context c ) {
-        if ( fInstance == null )
-            fInstance = new MyData( c );
+    // Obtain instance, constructing it if necessary.  Should be called in onCreate() of
+    // all activity that makes use of MyData.
+    public static MyData initInstance( Context c ) {
+        if ( fInstance == null ) {
+            // make sure that app context is used which is valid for the whole run time of the app
+            Context appContext = c.getApplicationContext();
+            fInstance = new MyData( appContext );
+        }
+        return fInstance;
     }
 
+    // Obtain instance, relying on the fact that it is already existing.
     public static MyData getInstance() {
         assert( fInstance != null );
         return fInstance;
