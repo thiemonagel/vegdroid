@@ -4,6 +4,7 @@
     <string name="app_name">VegDroid</string>
     <string name="button_nearby">Find venues nearby</string>
     <string name="button_ok">OK</string>
+    <string name="button_previous"><![CDATA[<i>Previous Selection</i>]]></string>
     <string name="menu_about">About VegDroid</string>
     <string name="menu_filter_cat">Filter Category</string>
     <string name="menu_settings">Settings</string>
@@ -13,7 +14,7 @@
     <string name="title_activity_display_list">VegDroid</string>
     <string name="title_activity_entry">VegDroid</string>
     <string name="title_activity_map">MapActivity</string>
-    <string name="version_string">0.1.4 (alpha)</string>
+    <string name="version_string">0.1.5 (alpha)</string>
 
     <string-array name="categories">
         <item>Restaurant</item>

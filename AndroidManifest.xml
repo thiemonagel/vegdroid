@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.thiemonagel.vegdroid"
     android:installLocation="auto"
-    android:versionCode="5"
+    android:versionCode="6"
     android:versionName="@string/version_string" >
 
     <!--

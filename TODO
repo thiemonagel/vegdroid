@@ -22,7 +22,9 @@ TODO
 * improve ListActivity and EntryActivity
   o add entries' opening times
   o add users' reviews
-* remove MainActivity
+* test Hotel/B&B match (possible ampersand encoding issue)
+* test actual amount of logging taking place when installing from
+  release APK
 * test on more devices
 * check thread-safety
 * network
@@ -45,6 +47,7 @@ BUGS
 
 DONE
 ====
+* improve MainActivity
 * rounding of yards is broken
 * remove excessive logging
 * add OK button to AboutActivity

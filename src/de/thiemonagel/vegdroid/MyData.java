@@ -44,7 +44,7 @@ public class MyData {
 
     private static final int                         YARDS         = 1760;   // 1760 yards in a mile, who invented that?
 
-    private static MyData                            fInstance = null;
+    private static volatile MyData                   fInstance = null;
 
     private Context                                  fContext;               // required for location manager, among others
     private int                                      fCatFilterMask;
@@ -54,6 +54,7 @@ public class MyData {
     private String                                   fError;                 // error message
     private int                                      fNumEntryLimit;         // number of entries to be pulled from server
     private boolean                                  fkm;                    // whether distances are to be displayed in km
+    private Location                                 fCurrentLoc;            // current location
     private Location                                 fLastLoc;               // last location for which data have been loaded
     private Date                                     fLastDate;              // last time data have been loaded
     private SharedPreferences                        fSettings;
@@ -65,6 +66,7 @@ public class MyData {
         fContext       = c;
         fError         = "";
         fNumEntryLimit = 50;
+        fCurrentLoc    = null;
         fLastLoc       = null;
         fLastDate      = null;
 
@@ -73,13 +75,17 @@ public class MyData {
         String ISO = tm.getSimCountryIso().toLowerCase();
         Log.i( LOG_TAG, "SIM country ISO: " + ISO );
 
-        // it seems that only USA and GB still use miles:
+        // it seems that only USA, GB, Liberia and Burma still use miles:
         // https://en.wikipedia.org/wiki/Imperial_units#Current_use_of_imperial_units
-        if (    ISO.equals("gb")
+        // https://www.cia.gov/library/publications/the-world-factbook/appendix/appendix-g.html
+        // https://en.wikipedia.org/wiki/Burmese_units_of_measurement
+        if (    ISO.equals("gb")   // Great Britain
              || ISO.equals("io")   // British Indian Ocean Territory
-             || ISO.equals("uk")   // bad iso code, checking it nevertheless, just in case...
+             || ISO.equals("lr")   // Liberia
+             || ISO.equals("mm")   // Burma
+             || ISO.equals("uk")   // bad ISO code, checking it nevertheless, just in case...
              || ISO.equals("um")   // U.S. Minor Outlying Islands
-             || ISO.equals("us")
+             || ISO.equals("us")   // U.S.A.
              || ISO.equals("vg")   // British Virgin Islands
              || ISO.equals("vi") ) // U.S. Virgin Islands
             fkm = false;
@@ -93,18 +99,29 @@ public class MyData {
         Log.d( LOG_TAG, "Read CatFilterMask: " + fCatFilterMask );
     }
 
-    // provide application context!
-    public static void initInstance( Context c ) {
-        if ( fInstance == null )
-            fInstance = new MyData( c );
+    // Obtain instance, constructing it if necessary.  Should be called in onCreate() of
+    // all activity that makes use of MyData.
+    public static MyData initInstance( Context c ) {
+        if ( fInstance == null ) {
+            synchronized (MyData.class) {
+                if ( fInstance == null ) {
+                    // make sure that app context is used which is valid for the whole run time of the app
+                    Context appContext = c.getApplicationContext();
+                    fInstance = new MyData( appContext );
+                }
+            }
+        }
+        return fInstance;
     }
 
+    // Obtain instance, relying on the fact that it is already existing.
     public static MyData getInstance() {
         assert( fInstance != null );
         return fInstance;
     }
 
-    public String getError() { return fError; }
+    public String getError()   { return fError; }
+    public void   clearError() { fError = "";   }
 
     // set category index to value val
     public void setCatFilter( int index, boolean val ) {
@@ -112,6 +129,14 @@ public class MyData {
             fCatFilterMask |= (1<<index);
         else
             fCatFilterMask &= ~(1<<index);
+    }
+
+    public void setCatFilter( int mask ) {
+        fCatFilterMask = mask;
+    }
+
+    public int getCatFilter() {
+        return fCatFilterMask;
     }
 
     public boolean[] getCatFilterBool() {
@@ -144,7 +169,8 @@ public class MyData {
         return fDataList;
     }
 
-    // recreate current display list (must be run after filters have been updated)
+    // recreate current display list (must be run after data has been loaded or
+    // filters have been updated)
     public void updateList() {
         // empty list
         fDataList.clear();
@@ -181,13 +207,11 @@ public class MyData {
         });
     }
 
-    // pull data from vegguide.org and decode JSON into fDataMap
-    protected void Load() {
-
+    // return success if location could be obtained
+    boolean UpdateLocation() {
         // find location
         LocationManager lMan = (LocationManager) fContext.getSystemService(Context.LOCATION_SERVICE);
         List<String> lproviders = lMan.getProviders( false );  // true = enabled only
-        Location best = null;
         Log.d( LOG_TAG, lproviders.size() + " location providers found." );
         for ( String prov : lproviders ) {
             Location l = lMan.getLastKnownLocation(prov);
@@ -205,36 +229,35 @@ public class MyData {
             }
             Log.d( LOG_TAG, logstr );
 
-            if ( l == null ) {
+            if ( l == null )
                 continue;
-            }
 
-            if ( best == null ) {
-                best = l;
+            if ( fCurrentLoc == null ) {
+                fCurrentLoc = l;
                 continue;
             }
 
             // if one reading doesn't have accuracy, the latest is preferred
-            if ( !best.hasAccuracy() || !l.hasAccuracy() ) {
-                if ( l.getTime() > best.getTime() ) {
-                    best = l;
+            if ( !fCurrentLoc.hasAccuracy() || !l.hasAccuracy() ) {
+                if ( l.getTime() > fCurrentLoc.getTime() ) {
+                    fCurrentLoc = l;
                 }
                 continue;
             }
 
-            long  btime = best.getTime();     // ms
-            long  ltime = l.getTime();        // ms
-            float bacc  = best.getAccuracy(); // m
-            float lacc  = l.getAccuracy();    // m
+            long  btime = fCurrentLoc.getTime();     // ms
+            long  ltime = l.getTime();               // ms
+            float bacc  = fCurrentLoc.getAccuracy(); // m
+            float lacc  = l.getAccuracy();           // m
 
             // both have accuracy, l is more recent and more accurate
             if ( ltime > btime && lacc < bacc ) {
-                best = l;
+                fCurrentLoc = l;
                 continue;
             }
 
             long  tdist = ltime - btime;
-            float dist  = l.distanceTo( best );
+            float dist  = l.distanceTo( fCurrentLoc );
             // agreement in sigmas
             float agr  = dist / FloatMath.sqrt( bacc*bacc + lacc*lacc );
 
@@ -245,46 +268,48 @@ public class MyData {
             if ( crit < 3f ) { crit = 3f; }
             if ( agr < crit ) {
                 if ( lacc < bacc ) {
-                    best = l;
+                    fCurrentLoc = l;
                 }
             } else {
                 if ( ltime > btime ) {
-                    best = l;
+                    fCurrentLoc = l;
                 }
             }
         }
 
-        // skip loading of data when location has changed less than 50 meters and previously received
-        // data is less than one day old
-        Date now = new Date();
-        if ( fLastLoc != null && fLastDate != null
-             && fLastLoc.distanceTo(best) < 50f
-             && (now.getTime()-fLastDate.getTime()) /1000 /3600 /24 == 0 )
-            return;
-        fLastLoc  = best;
-        fLastDate = now;
-
-        String url = "http://www.vegguide.org/search/by-lat-long/";
-        float locationAccuracy;
-        if ( best == null ) {
+        if ( fCurrentLoc == null ) {
             if ( DEBUG ) {
                 // set bogus location for debugging
                 Log.i( LOG_TAG, "No location found." );
                 //url += "0,0";
-                url += "48.139126,11.580186";
-                locationAccuracy = .75f;
+                fCurrentLoc = new Location("");
+                fCurrentLoc.setLatitude (48.139126);
+                fCurrentLoc.setLongitude(11.580186);
+                fCurrentLoc.setAccuracy (100.f);
             } else {
                 // abort with error
                 fError = "Location could not be determined!";
-                return;
+                return false;
             }
-        } else {
-            url += best.getLatitude() + "," + best.getLongitude();
-            locationAccuracy = best.getAccuracy() / ( fkm ? 1000f : 1609.344f );
         }
+        return true;
+    }
+
+    // pull data from vegguide.org and decode JSON into fDataMap
+    // return true on success
+    protected boolean Load() {
+
+        // skip loading of data when location has changed less than 50 meters and previously received
+        // data is less than one day old
+        Date now = new Date();
+        if ( fCurrentLoc != null && fLastLoc != null && fLastDate != null
+             && fCurrentLoc.distanceTo(fLastLoc) < 50f
+             && (now.getTime()-fLastDate.getTime()) /1000 /3600 /24 == 0 )
+            return true;
 
         int roundDigits;
         float roundMultiplier;  // for km/miles
+        float locationAccuracy = fCurrentLoc.getAccuracy() / ( fkm ? 1000f : 1609.344f );
         if ( locationAccuracy < .015f ) {
             roundMultiplier = ( fkm ? 1000f : YARDS );
             roundDigits     = 3;
@@ -302,7 +327,9 @@ public class MyData {
 
         // By default, the website imposes a 5km limit, but I prefer to show the
         // closest venues, even if they are thousands of miles away.
-        url += "?unit=km&distance=100000&limit=" + fNumEntryLimit;
+        String url = "http://www.vegguide.org/search/by-lat-long/"
+                + fCurrentLoc.getLatitude() + "," + fCurrentLoc.getLongitude()
+                + "?unit=km&distance=100000&limit=" + fNumEntryLimit;
 
         Log.i( LOG_TAG, "Getting: " +url );
         HttpClient client = new DefaultHttpClient();  // Apache HTTP client
@@ -324,16 +351,16 @@ public class MyData {
                 }
             } else {
                 fError = "Bad server status code: " + statusCode;
-                return;
+                return false;
             }
         } catch (ClientProtocolException e) {
             e.printStackTrace();
             fError = "ClientProtocolException";
-            return;
+            return false;
         } catch (IOException e) {
             e.printStackTrace();
             fError = "IOException";
-            return;
+            return false;
         }
 
         Log.v( LOG_TAG, builder.toString() );
@@ -439,13 +466,17 @@ public class MyData {
                 } catch (JSONException e) {
                     Log.e( LOG_TAG, "uri missing!" );
                     fError = "URI missing!";
-                    return;
+                    return false;
                 }
             }
         } catch (JSONException e) {
             e.printStackTrace();
             fError = "JSONException";
-            return;
+            return false;
         }
+
+        fLastLoc  = fCurrentLoc;
+        fLastDate = now;
+        return true;
     }
 }
