@@ -118,10 +118,11 @@ public class DisplayListActivity extends ListActivity {
          * getting All products from url
          * */
         protected String doInBackground(String... args) {
-
-            MyData.getInstance().Load();
-            MyData.getInstance().updateList();
-
+            MyData md = MyData.getInstance();
+            md.clearError();
+            if ( !md.UpdateLocation() ) return null;
+            if ( !md.Load()           ) return null;
+            md.updateList();
             return null;
         }
 
