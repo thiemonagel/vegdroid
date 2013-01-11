@@ -4,6 +4,7 @@
     <string name="app_name">VegDroid</string>
     <string name="button_nearby">Find venues nearby</string>
     <string name="button_ok">OK</string>
+    <string name="button_previous"><![CDATA[<i>Previous Selection</i>]]></string>
     <string name="menu_about">About VegDroid</string>
     <string name="menu_filter_cat">Filter Category</string>
     <string name="menu_settings">Settings</string>
