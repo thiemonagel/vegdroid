@@ -1,8 +1,13 @@
 package de.thiemonagel.vegdroid;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
 
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -12,6 +17,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapActivity extends android.support.v4.app.FragmentActivity {
+    private static final String                      LOG_TAG       = "VegDroid";
+
     private GoogleMap fMap;
 
     @Override
@@ -41,6 +48,36 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
             ui.setZoomControlsEnabled(true);
             ui.setZoomGesturesEnabled(true);
 
+            Date gstart = new Date();
+            Geocoder gc = new Geocoder(this);
+            int N = 100;
+            for ( int i=1; i<=N; i++ )
+                try {
+                    String loc = "Leopoldstr. " + i + ", München";
+
+                    Date start = new Date();
+                    List<Address> la = gc.getFromLocationName(loc, 1);
+                    Date end = new Date();
+                    float ms = (end.getTime()-start.getTime());
+                    Log.d( LOG_TAG, "geocode " + i + ": " + ms + " ms" );
+
+                    if ( la.size() > 0 ) {
+                        Address a = la.get(0);
+                        fMap.addMarker( new MarkerOptions()
+                                .position( new LatLng(a.getLatitude(), a.getLongitude()) )
+                                .title("Title")
+                                .snippet(loc)
+                        );
+                    }
+                } catch (IOException e) {};
+
+                Date end = new Date();
+                float ms = (end.getTime()-gstart.getTime());
+                Log.d( LOG_TAG, "avg time per geocode: " + ms/N + " ms" );
+
+
+
+            /*
             ArrayList<Float> lat = new ArrayList<Float>();
             ArrayList<Float> lon = new ArrayList<Float>();
             int N=1000;
@@ -56,12 +93,13 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
             }
 
             for ( int i=0; i<N; i++ ) {
-                fMap.addMarker(new MarkerOptions()
+                fMap.addMarker( new MarkerOptions()
                         .position( new LatLng(lat.get(i), lon.get(i)) )
                         .title("Title "+i)
                         .snippet("Text "+i)
                         );
             }
+            */
 
         }
     }
