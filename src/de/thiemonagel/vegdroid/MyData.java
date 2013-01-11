@@ -34,6 +34,8 @@ import android.telephony.TelephonyManager;
 import android.util.FloatMath;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+
 // Singleton containing data to be displayed
 public class MyData {
     private static final boolean                     DEBUG         = false;
@@ -205,6 +207,14 @@ public class MyData {
                     return 1;
             }
         });
+    }
+
+    // access current location
+    protected LatLng getLocation() {
+        if ( fCurrentLoc == null )
+            return null;
+        else
+            return new LatLng( fCurrentLoc.getLatitude(), fCurrentLoc.getLongitude() );
     }
 
     // return success if location could be obtained

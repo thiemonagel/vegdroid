@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
@@ -25,6 +26,8 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+        MyData.initInstance(this);
         setupMap();
     }
 
@@ -48,9 +51,12 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
             ui.setZoomControlsEnabled(true);
             ui.setZoomGesturesEnabled(true);
 
+            if ( MyData.getInstance().UpdateLocation() )
+                fMap.moveCamera( CameraUpdateFactory.newLatLngZoom( MyData.getInstance().getLocation(), 12.f) );
+
             Date gstart = new Date();
             Geocoder gc = new Geocoder(this);
-            int N = 100;
+            int N = 1;
             for ( int i=1; i<=N; i++ )
                 try {
                     String loc = "Leopoldstr. " + i + ", München";
