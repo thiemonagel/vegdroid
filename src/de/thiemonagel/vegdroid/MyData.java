@@ -44,7 +44,7 @@ public class MyData {
 
     private static final int                         YARDS         = 1760;   // 1760 yards in a mile, who invented that?
 
-    private static MyData                            fInstance = null;
+    private static volatile MyData                   fInstance = null;
 
     private Context                                  fContext;               // required for location manager, among others
     private int                                      fCatFilterMask;
@@ -101,9 +101,13 @@ public class MyData {
     // all activity that makes use of MyData.
     public static MyData initInstance( Context c ) {
         if ( fInstance == null ) {
-            // make sure that app context is used which is valid for the whole run time of the app
-            Context appContext = c.getApplicationContext();
-            fInstance = new MyData( appContext );
+            synchronized (MyData.class) {
+                if ( fInstance == null ) {
+                    // make sure that app context is used which is valid for the whole run time of the app
+                    Context appContext = c.getApplicationContext();
+                    fInstance = new MyData( appContext );
+                }
+            }
         }
         return fInstance;
     }
