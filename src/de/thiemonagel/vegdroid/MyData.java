@@ -409,6 +409,7 @@ public class MyData {
                             continue;
                     } catch (ParseException e) {
                         Log.e( LOG_TAG, "closed_date parse error!" );
+                        continue;
                     }
                 }
 
