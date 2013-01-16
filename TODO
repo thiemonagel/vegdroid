@@ -14,6 +14,7 @@ MISSING FEATURES
 
 TODO
 ====
+* display GSON license to users
 * Google Maps API ToS Compliance:
   o obtain user consent to acquire, cache and transmit location data and provide facility
     to revoke that consent, as required by 10.1.1 (j) "Geolocation Privacy"

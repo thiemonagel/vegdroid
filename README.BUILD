@@ -2,6 +2,7 @@ VegDroid depends on:
 
  * android-support-v4.jar
  * google-play-services.jar (for Google Maps v2 API)
+ * gson-2.2.2.jar (to support older devices, it is built into Android only starting from Honeycomb)
 
 
 Eclipse configuration instructions to build against these libs and to package
@@ -13,6 +14,7 @@ them into the APK:
 
      <SDKDIR>/extras/android/support/v4/android-support-v4.jar
      <SDKDIR>/extras/google/google_play_services/libproject/libs/google-play-services.jar
+     /path/to/gson-2.2.2.jar
 
 2. Checkmark libraries in
 
