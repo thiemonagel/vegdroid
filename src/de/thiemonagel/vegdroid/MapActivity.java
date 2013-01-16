@@ -72,11 +72,12 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
         }
 
         @Override
-        protected MarkerOptions doInBackground(String... urlarray) {
-            assert( urlarray.length == 2 );
+        protected MarkerOptions doInBackground(String... strings) {
+            assert( strings.length == 3 );
 
-            String loc  = urlarray[0];
-            String name = urlarray[1];
+            String loc  = strings[0];
+            String name = strings[1];
+            String desc = strings[2];
             int count = -1;
             try {
                 Date start = new Date();
@@ -94,7 +95,7 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
                     return new MarkerOptions()
                             .position( new LatLng(a.getLatitude(), a.getLongitude()) )
                             .title(name)
-                            .snippet(loc);
+                            .snippet(desc);
                 }
             } catch (IOException e) {
                 Log.e( LOG_TAG, "geocode #" + count + " io exception" );
@@ -159,7 +160,7 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
                             while ( reader.hasNext() ) {
                                 // read entry
                                 reader.beginObject();
-                                String name="", a1="", a2="", c="", pc="";
+                                String name="", a1="", a2="", c="", pc="", desc="";
                                 while ( reader.hasNext() ) {
                                     String item = reader.nextName();
                                     //Log.d( LOG_TAG, "-- " + item );
@@ -173,6 +174,8 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
                                         c  = reader.nextString();
                                     } else if ( item.equals("postal_code") ) {
                                         pc = reader.nextString();
+                                    } else if ( item.equals("short_description") ) {
+                                        desc = reader.nextString();
                                     } else {
                                         reader.skipValue();
                                     }
@@ -189,9 +192,9 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
                                 // sequentially on honeycomb or later
                                 LoadGeoCode lgc = new LoadGeoCode( fContext );
                                 if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ) {
-                                    lgc.executeOnExecutor( exec, loc, name );
+                                    lgc.executeOnExecutor( exec, loc, name, desc );
                                 } else {
-                                    lgc.execute( loc, name );
+                                    lgc.execute( loc, name, desc );
                                 }
                             }
                             reader.endArray();
