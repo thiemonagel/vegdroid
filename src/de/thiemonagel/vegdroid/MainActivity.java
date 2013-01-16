@@ -62,10 +62,6 @@ public class MainActivity extends Activity {
                 intent = new Intent(this, AboutActivity.class);
                 startActivity(intent);
                 return true;
-            case R.id.menu_map:
-                intent = new Intent(this, MapActivity.class);
-                startActivity(intent);
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

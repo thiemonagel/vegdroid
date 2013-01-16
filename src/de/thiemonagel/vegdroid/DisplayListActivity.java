@@ -59,6 +59,10 @@ public class DisplayListActivity extends ListActivity {
             case R.id.menu_filter_cat:
                 CreateDialog().show();
                 return true;
+            case R.id.menu_map:
+                intent = new Intent(this, MapActivity.class);
+                startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
