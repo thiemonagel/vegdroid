@@ -13,12 +13,16 @@ MISSING FEATURES
 
 TODO
 ====
+* licenses:  are there any other packages whose licenses must be acknowledged?
+  Android itself?  support library?
 * Google Maps API ToS Compliance:
   o obtain user consent to acquire, cache and transmit location data and provide facility
     to revoke that consent, as required by 10.1.1 (j) "Geolocation Privacy"
   o ensure that geodata from Google is not cached for longer than 30 days,
     as required by 10.1.3 (b) "No Pre-Fetching, Caching or Storage of Content"
 * improve map view
+  o cancel background tasks when MapActivity loses focus?
+  o what happens to onPostExecute() when it's called after MapActivity has lost focus?
 * improve ListActivity and EntryActivity
   o add entries' opening times
   o add users' reviews
