@@ -98,6 +98,10 @@
             -->
         </activity>
         <activity
+            android:name="de.thiemonagel.vegdroid.MapActivity"
+            android:label="@string/title_activity_map" >
+        </activity>
+        <activity
             android:name="de.thiemonagel.vegdroid.AboutActivity"
             android:label="@string/title_activity_about" >
         </activity>
@@ -112,11 +116,6 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyB9IYt3oTaAuGIE3NWYu3c9gl-BClLtTUg" />
-
-        <activity
-            android:name="de.thiemonagel.vegdroid.MapActivity"
-            android:label="@string/title_activity_map" >
-        </activity>
     </application>
 
 </manifest>
