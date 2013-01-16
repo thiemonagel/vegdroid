@@ -8,6 +8,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -124,6 +126,8 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
         protected Void doInBackground(LatLng... llarray) {
             assert( llarray.length == 1 );
 
+            Date now = new Date();
+
             HttpURLConnection  conn   = null;
             JsonReader         reader = null;
             ThreadPoolExecutor exec   = null;
@@ -160,7 +164,7 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
                             while ( reader.hasNext() ) {
                                 // read entry
                                 reader.beginObject();
-                                String name="", a1="", a2="", c="", pc="", desc="";
+                                String name="", a1="", a2="", c="", pc="", desc="", closed="";
                                 while ( reader.hasNext() ) {
                                     String item = reader.nextName();
                                     //Log.d( LOG_TAG, "-- " + item );
@@ -176,11 +180,27 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
                                         pc = reader.nextString();
                                     } else if ( item.equals("short_description") ) {
                                         desc = reader.nextString();
+                                    } else if ( item.equals("close_date") ) {
+                                        closed = reader.nextString();
                                     } else {
                                         reader.skipValue();
                                     }
                                 }
                                 reader.endObject();
+
+                                // skip closed entries
+                                if ( !closed.equals("") ) {
+                                    SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
+                                    try {
+                                        Date cdate = ft.parse( closed );
+                                        if ( cdate.before(now) )
+                                            continue;
+                                    } catch (ParseException e) {
+                                        Log.e( LOG_TAG, "closed_date parse error!" );
+                                        continue;
+                                    }
+                                }
+
 
                                 String loc = "";
                                 loc        += ( a1.equals("") ? "" : (loc.equals("")?"":", ") + a1 );
