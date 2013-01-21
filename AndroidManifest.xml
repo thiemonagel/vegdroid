@@ -8,6 +8,9 @@
     <!--
         current version distribution: https://developer.android.com/about/dashboards/index.html
         (everything before Eclair has 0.4% market share as of 2012-12-03)
+
+        Google Maps v2 API requires Froyo or newer
+
         7: Eclair 2.1
         8: Froyo  2.2
         9: Gingerbread 2.3-2.3.2 (almost unused)
