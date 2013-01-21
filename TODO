@@ -20,12 +20,15 @@ TODO
     to revoke that consent, as required by 10.1.1 (j) "Geolocation Privacy"
   o ensure that geodata from Google is not cached for longer than 30 days,
     as required by 10.1.3 (b) "No Pre-Fetching, Caching or Storage of Content"
+* implement "GeoCache" for geocodes?
 * improve map view
   o cancel background tasks when MapActivity loses focus?
   o what happens to onPostExecute() when it's called after MapActivity has lost focus?
 * improve ListActivity and EntryActivity
   o add entries' opening times
   o add users' reviews
+  o add link to web page to allow users to rate and review
+* integrate ACRA crash reporting?
 * test actual amount of logging taking place when installing from
   release APK
 * test on more devices
