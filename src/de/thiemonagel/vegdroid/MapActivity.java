@@ -185,57 +185,52 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
                             while ( reader.hasNext() ) {
                                 // read entry
                                 reader.beginObject();
-                                String name="", a1="", a2="", c="", pc="", desc="", closed="";
+                                Venue v = new Venue();
                                 while ( reader.hasNext() ) {
                                     String item = reader.nextName();
                                     //Log.d( LOG_TAG, "-- " + item );
                                     if ( item.equals("name") ) {
-                                        name = reader.nextString();
+                                        v.name = reader.nextString();
                                     } else if ( item.equals("address1") ) {
-                                        a1 = reader.nextString();
+                                        v.address1 = reader.nextString();
                                     } else if ( item.equals("address2") ) {
-                                        a2 = reader.nextString();
+                                        v.address2 = reader.nextString();
                                     } else if ( item.equals("city") ) {
-                                        c  = reader.nextString();
+                                        v.city = reader.nextString();
                                     } else if ( item.equals("postal_code") ) {
-                                        pc = reader.nextString();
+                                        v.postCode = reader.nextString();
                                     } else if ( item.equals("short_description") ) {
-                                        desc = reader.nextString();
+                                        v.shortDescription = reader.nextString();
                                     } else if ( item.equals("close_date") ) {
-                                        closed = reader.nextString();
+                                        // TODO: catch IndexOutOfBoundsException???
+                                        try {
+                                            v.closeDate = Rfc3339.parseDate( reader.nextString() );
+                                        } catch ( java.text.ParseException e ) {
+                                            v.closeDate = new Date(0);
+                                        }
+                                    } else if ( item.equals("uri") ) {
+                                        v.setId( reader.nextString() );
                                     } else {
                                         reader.skipValue();
                                     }
                                 }
                                 reader.endObject();
 
-                                // skip closed entries
-                                if ( !closed.equals("") ) {
-                                    SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
-                                    try {
-                                        Date cdate = ft.parse( closed );
-                                        if ( cdate.before(now) )
-                                            continue;
-                                    } catch (ParseException e) {
-                                        Log.e( LOG_TAG, "closed_date parse error!" );
-                                        continue;
-                                    }
+                                // write to global storage, skip if id doesn't exist
+                                // TODO: this may lead to missed updates in case the venue already does exist
+                                try {
+                                    Global.getInstance().venues.put( v.getId(), v);
+                                } catch ( IllegalStateException e ) {
+                                    continue;
                                 }
 
-
-                                String loc = "";
-                                loc        += ( a1.equals("") ? "" : (loc.equals("")?"":", ") + a1 );
-                                loc        += ( a2.equals("") ? "" : (loc.equals("")?"":", ") + a2 );
-                                loc        += ( c.equals("")  ? "" : (loc.equals("")?"":", ") + c  );
-                                loc        += ( pc.equals("") ? "" : (loc.equals("")?"":", ") + pc );
-
-                                // work around the fact that by default, multiple AsyncTasks by are run
-                                // sequentially on honeycomb or later
+                                // work around the fact that by default, multiple AsyncTasks are run
+                                // *sequentially* on honeycomb or later
                                 LoadGeoCode lgc = new LoadGeoCode( fContext );
                                 if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ) {
-                                    lgc.executeOnExecutor( exec, loc, name, desc );
+                                    lgc.executeOnExecutor( exec, v.locString(), v.name, v.shortDescription );
                                 } else {
-                                    lgc.execute( loc, name, desc );
+                                    lgc.execute( v.locString(), v.name, v.shortDescription );
                                 }
                             }
                             reader.endArray();
