@@ -103,6 +103,8 @@ public class MyData {
 
     // Obtain instance, constructing it if necessary.  Should be called in onCreate() of
     // all activity that makes use of MyData.
+    // Double-checked locking is ok with Java 5 or later because writing to volatile fInstance is atomic,
+    // cf. http://www.javamex.com/tutorials/double_checked_locking_fixing.shtml
     public static MyData initInstance( Context c ) {
         if ( fInstance == null ) {
             synchronized (MyData.class) {
