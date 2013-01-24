@@ -5,19 +5,23 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
-public class Rfc3339 {
+public class DateParser {
 
-    public static java.util.Date parseDate(String str) throws java.text.ParseException {
+    // parse yyyy-MM-dd format which is assumed to be in the local time zone,
+    // return Date in UTC
+    public static java.util.Date parseYmd(String str) throws java.text.ParseException {
+        if ( str.length() != 10 ) throw new ParseException( "Ymd:  Illegal string size!", str.length()-1 );
+
         SimpleDateFormat sdf = (SimpleDateFormat) DateFormat.getDateTimeInstance();
         sdf.setLenient ( false );
+        sdf.applyPattern("yyyy-MM-dd");
+        return sdf.parse(str);
+    }
 
-        // accept date-only format, although it is not RFC 3339
-        if ( str.length() == 10 ) {
-            // input date doesn't specify time zone, so UTC is used as default
-            sdf.setTimeZone( TimeZone.getTimeZone("UTC") );
-            sdf.applyPattern("yyyy-MM-dd");
-            return sdf.parse(str);
-        }
+    // parse RFC 3339 datetime, return Date in UTC
+    public static java.util.Date parseRfc3339(String str) throws java.text.ParseException {
+        SimpleDateFormat sdf = (SimpleDateFormat) DateFormat.getDateTimeInstance();
+        sdf.setLenient ( false );
 
         int len = str.length();
         if ( len < 20 ) throw new ParseException( "Rfc3339:  String too short!", len-1 );

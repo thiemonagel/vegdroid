@@ -48,7 +48,8 @@ public class Venue {
                 reader.endObject();
             } else if ( item2.equals("close_date") ) {
                 try {
-                    closeDate = Rfc3339.parseDate( reader.nextString() );
+                    // the time zone is ill-defined, therefore local time is used as a best guess
+                    closeDate = DateParser.parseYmd( reader.nextString() );
                 } catch ( java.text.ParseException e ) {
                     // when close_date exists, but the date cannot be parsed,
                     // the closing date is assumed to lie in the past
