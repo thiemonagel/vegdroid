@@ -51,7 +51,7 @@ public class Venue {
             while ( u.endsWith("/") ) {
                 u = u.substring( 0, u.length()-1 );
             }
-            mid = Integer.parseInt( u.substring( u.lastIndexOf('/') ) );
+            mid = Integer.parseInt( u.substring( u.lastIndexOf('/')+1 ) );
         } catch ( IndexOutOfBoundsException e ) {
             // don't update mid in case of parse error
         } catch ( NumberFormatException e ) {
