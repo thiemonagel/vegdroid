@@ -3,6 +3,8 @@ MISSING FEATURES
 * add search box
 * implement veg-level filtering
 * implement opening-time filtering
+  o implement region downloading and caching
+  o obtain time zone from region
 * implement list sorting by name, distance, rating...
 * add "food only" option somewhere?
 * adapt layout to tablets
