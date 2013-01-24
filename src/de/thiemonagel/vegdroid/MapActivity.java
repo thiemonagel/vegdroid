@@ -8,10 +8,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -19,7 +19,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,9 +29,11 @@ import android.view.MenuItem;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.stream.JsonReader;
 
@@ -43,6 +44,8 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
 
     private GoogleMap fMap;
     private Geocoder  fGC;
+
+    private Map<String,Integer> mMarkers = new TreeMap<String,Integer>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,23 +91,26 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
     }
 
     private class LoadGeoCode extends AsyncTask<String, Void, MarkerOptions> {
-        private Geocoder fGC;
+        private          Geocoder mGC;
+        private volatile int      mVenueId;
 
         public LoadGeoCode( Context context ) {
-            fGC = new Geocoder( context );
+            mGC = new Geocoder( context );
         }
 
         @Override
         protected MarkerOptions doInBackground(String... strings) {
-            assert( strings.length == 3 );
+            assert( strings.length == 4 );
 
             String loc  = strings[0];
             String name = strings[1];
             String desc = strings[2];
+            String vid  = strings[3];
+            mVenueId = Integer.parseInt(vid);
             int count = -1;
             try {
                 Date start = new Date();
-                List<Address> la = fGC.getFromLocationName(loc, 1);
+                List<Address> la = mGC.getFromLocationName(loc, 1);
                 Date end = new Date();
                 float ms = (end.getTime()-start.getTime());
                 synchronized (LoadGeoCode.class) {
@@ -130,7 +136,8 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
         @Override
         protected void onPostExecute( MarkerOptions mo ) {
             if ( mo != null ) {
-                fMap.addMarker( mo );
+                Marker m = fMap.addMarker( mo );
+                mMarkers.put( m.getId(), mVenueId );
             }
         }
     }  // class LoadGeoCode
@@ -273,6 +280,15 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
         ui.setTiltGesturesEnabled(true);
         ui.setZoomControlsEnabled(true);
         ui.setZoomGesturesEnabled(true);
+
+        fMap.setOnInfoWindowClickListener( new OnInfoWindowClickListener() {
+            public void onInfoWindowClick( Marker m ) {
+                int VenueId = mMarkers.get( m.getId() );
+                Intent in = new Intent( getApplicationContext(), EntryActivity.class );
+                in.putExtra( "VenueId", VenueId );
+                startActivity(in);
+            }
+        });
 
         if ( MyData.getInstance().UpdateLocation() )
             fMap.moveCamera( CameraUpdateFactory.newLatLngZoom( MyData.getInstance().getLocation(), 12.f) );
