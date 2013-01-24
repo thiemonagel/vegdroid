@@ -154,14 +154,13 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
         protected Void doInBackground(LatLng... llarray) {
             assert( llarray.length == 1 );
 
-            Date now = new Date();
-
             HttpURLConnection  conn   = null;
             JsonReader         reader = null;
             ThreadPoolExecutor exec   = null;
             if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ) {
                 exec = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
             }
+
             try {
                 LatLng ll = llarray[0];
                 String urlstring = "http://www.vegguide.org/search/by-lat-long/";
@@ -185,37 +184,40 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
                     reader = new JsonReader( new InputStreamReader( bin ) );
                     reader.beginObject();
                     while ( reader.hasNext() ) {
-                        if ( !reader.nextName().equals("entries") ) {
+                        String item = reader.nextName();
+                        //Log.v( LOG_TAG, "JSON: " + item );
+                        if ( !item.equals("entries") ) {
                             reader.skipValue();
                         } else {
                             reader.beginArray();
+                            int ecount = -1;
                             while ( reader.hasNext() ) {
                                 // read entry
+                                ecount++;
+                                //Log.v( LOG_TAG, "JSON:     #" + ecount );
                                 reader.beginObject();
                                 Venue v = new Venue();
                                 while ( reader.hasNext() ) {
-                                    String item = reader.nextName();
-                                    //Log.d( LOG_TAG, "-- " + item );
-                                    if ( item.equals("name") ) {
+                                    String item2 = reader.nextName();
+                                    if ( item2.equals("name") ) {
                                         v.name = reader.nextString();
-                                    } else if ( item.equals("address1") ) {
+                                    } else if ( item2.equals("address1") ) {
                                         v.address1 = reader.nextString();
-                                    } else if ( item.equals("address2") ) {
+                                    } else if ( item2.equals("address2") ) {
                                         v.address2 = reader.nextString();
-                                    } else if ( item.equals("city") ) {
+                                    } else if ( item2.equals("city") ) {
                                         v.city = reader.nextString();
-                                    } else if ( item.equals("postal_code") ) {
+                                    } else if ( item2.equals("postal_code") ) {
                                         v.postCode = reader.nextString();
-                                    } else if ( item.equals("short_description") ) {
+                                    } else if ( item2.equals("short_description") ) {
                                         v.shortDescription = reader.nextString();
-                                    } else if ( item.equals("close_date") ) {
-                                        // TODO: catch IndexOutOfBoundsException???
+                                    } else if ( item2.equals("close_date") ) {
                                         try {
                                             v.closeDate = Rfc3339.parseDate( reader.nextString() );
                                         } catch ( java.text.ParseException e ) {
                                             v.closeDate = new Date(0);
                                         }
-                                    } else if ( item.equals("uri") ) {
+                                    } else if ( item2.equals("uri") ) {
                                         v.setId( reader.nextString() );
                                     } else {
                                         reader.skipValue();
@@ -228,6 +230,7 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
                                 try {
                                     Global.getInstance().venues.put( v.getId(), v);
                                 } catch ( IllegalStateException e ) {
+                                    Log.e( LOG_TAG, "JSON:     getId() error" );
                                     continue;
                                 }
 
@@ -235,9 +238,11 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
                                 // *sequentially* on honeycomb or later
                                 LoadGeoCode lgc = new LoadGeoCode( fContext );
                                 if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ) {
-                                    lgc.executeOnExecutor( exec, v.locString(), v.name, v.shortDescription );
+                                    Log.d( LOG_TAG, "Queue LoadGeoCode in executor." );
+                                    lgc.executeOnExecutor( exec, v.locString(), v.name, v.shortDescription, String.valueOf( v.getId() ) );
                                 } else {
-                                    lgc.execute( v.locString(), v.name, v.shortDescription );
+                                    Log.d( LOG_TAG, "Queue LoadGeoCode." );
+                                    lgc.execute( v.locString(), v.name, v.shortDescription, String.valueOf( v.getId() ) );
                                 }
                             }
                             reader.endArray();
