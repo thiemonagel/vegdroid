@@ -43,7 +43,6 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
     private static int fGeoCount = 0;
 
     private GoogleMap fMap;
-    private Geocoder  fGC;
 
     private Map<String,Integer> mMarkers = new TreeMap<String,Integer>();
 
@@ -190,40 +189,13 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
                             reader.skipValue();
                         } else {
                             reader.beginArray();
-                            int ecount = -1;
+                            //int ecount = -1;
                             while ( reader.hasNext() ) {
                                 // read entry
-                                ecount++;
+                                //ecount++;
                                 //Log.v( LOG_TAG, "JSON:     #" + ecount );
-                                reader.beginObject();
                                 Venue v = new Venue();
-                                while ( reader.hasNext() ) {
-                                    String item2 = reader.nextName();
-                                    if ( item2.equals("name") ) {
-                                        v.name = reader.nextString();
-                                    } else if ( item2.equals("address1") ) {
-                                        v.address1 = reader.nextString();
-                                    } else if ( item2.equals("address2") ) {
-                                        v.address2 = reader.nextString();
-                                    } else if ( item2.equals("city") ) {
-                                        v.city = reader.nextString();
-                                    } else if ( item2.equals("postal_code") ) {
-                                        v.postCode = reader.nextString();
-                                    } else if ( item2.equals("short_description") ) {
-                                        v.shortDescription = reader.nextString();
-                                    } else if ( item2.equals("close_date") ) {
-                                        try {
-                                            v.closeDate = Rfc3339.parseDate( reader.nextString() );
-                                        } catch ( java.text.ParseException e ) {
-                                            v.closeDate = new Date(0);
-                                        }
-                                    } else if ( item2.equals("uri") ) {
-                                        v.setId( reader.nextString() );
-                                    } else {
-                                        reader.skipValue();
-                                    }
-                                }
-                                reader.endObject();
+                                v.parseJson(reader);
 
                                 // write to global storage, skip if id doesn't exist
                                 // TODO: this may lead to missed updates in case the venue already does exist

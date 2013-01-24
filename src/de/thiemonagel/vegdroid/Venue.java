@@ -1,9 +1,13 @@
 package de.thiemonagel.vegdroid;
 
+import java.io.IOException;
 import java.util.Date;
+
+import com.google.gson.stream.JsonReader;
 
 // all public members are initialized to non-null values
 public class Venue {
+    // TODO: veg_level, category
     public  volatile String name              = "";
     public  volatile String shortDescription  = "";
     public  volatile String longDescription   = "";
@@ -21,6 +25,63 @@ public class Venue {
 
     private volatile int    mid               = -1;
 
+
+    // parse JSON stream into member variables
+    public void parseJson( JsonReader reader ) throws IOException {
+        reader.beginObject();
+        while ( reader.hasNext() ) {
+            String item2 = reader.nextName();
+            if ( item2.equals("name") ) {
+                name = reader.nextString();
+            } else if ( item2.equals("short_description") ) {
+                shortDescription = reader.nextString();
+            } else if ( item2.equals("long_description") ) {
+                reader.beginObject();
+                while ( reader.hasNext() ) {
+                    String item3 = reader.nextName();
+                    if ( item3.equals("text/html") ) {
+                        longDescription = reader.nextString();
+                    } else {
+                        reader.skipValue();
+                    }
+                }
+                reader.endObject();
+            } else if ( item2.equals("close_date") ) {
+                try {
+                    closeDate = Rfc3339.parseDate( reader.nextString() );
+                } catch ( java.text.ParseException e ) {
+                    // when close_date exists, but the date cannot be parsed,
+                    // the closing date is assumed to lie in the past
+                    closeDate = new Date(0);
+                }
+            } else if ( item2.equals("weighted_rating") ) {
+                try {
+                    rating = Float.parseFloat( reader.nextString() );
+                } catch (NumberFormatException e) {
+                    // invalid numbers are ignored
+                }
+            } else if ( item2.equals("address1") ) {
+                address1 = reader.nextString();
+            } else if ( item2.equals("address2") ) {
+                address2 = reader.nextString();
+            } else if ( item2.equals("city") ) {
+                city = reader.nextString();
+            } else if ( item2.equals("postal_code") ) {
+                postCode = reader.nextString();
+            } else if ( item2.equals("neighborhood") ) {
+                neighborhood = reader.nextString();
+            } else if ( item2.equals("phone") ) {
+                phone = reader.nextString();
+            } else if ( item2.equals("website") ) {
+                website = reader.nextString();
+            } else if ( item2.equals("uri") ) {
+                setId( reader.nextString() );
+            } else {
+                reader.skipValue();
+            }
+        }
+        reader.endObject();
+    }
 
     // for use in geocoding
     public String locString() {
