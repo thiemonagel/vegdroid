@@ -1,68 +1,53 @@
-// from http://cokere.com/RFC3339Date.txt
-
-/*
-I was working on an Atom (http://www.w3.org/2005/Atom) parser and discovered that I
-could not parse dates in the format defined by RFC 3339 using the  SimpleDateFormat
-class. The  reason was the ':' in the time  zone. This code strips out the colon if
-it's there and tries four different formats on the resulting string depending on if
-it has a  time zone, or if it has a  fractional second part.  There is a probably a
-better way  to do this, and a more proper way.  But this is a really small addition
-to a  codebase  (You don't  need a jar, just throw  this  function in  some  static
-Utility class if you have one).
-
-Feel free to use this in your code, but I'd appreciate it if you keep this note  in
-the code if you distribute it.  Thanks!
-
-For  people  who might  be  googling: The date  format  parsed  by  this  goes  by:
-atomDateConstruct,  xsd:dateTime,  RFC3339  and  is compatable with: ISO.8601.1988,
-W3C.NOTE-datetime-19980827  and  W3C.REC-xmlschema-2-20041028   (that  I  know  of)
-
-
-Copyright 2007, Chad Okere (ceothrow1 at gmail dotcom)
-OMG NO WARRENTY EXPRESSED OR IMPLIED!!!1
-*/
-
 package de.thiemonagel.vegdroid;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.TimeZone;
 
 public class Rfc3339 {
 
-    public static java.util.Date parseDate(String datestring) throws java.text.ParseException, IndexOutOfBoundsException {
-        Date d = new Date();
+    public static java.util.Date parseDate(String str) throws java.text.ParseException {
+        SimpleDateFormat sdf = (SimpleDateFormat) DateFormat.getDateTimeInstance();
+        sdf.setLenient ( false );
 
-        //if there is no time zone, we don't need to do any special parsing.
-        if (datestring.endsWith("Z")) {
-            try {
-                SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");//spec for RFC3339
-                d = s.parse(datestring);
-            }
-            catch (java.text.ParseException pe) { //try again with optional decimals
-                SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"); //spec for RFC3339 (with fractional seconds)
-                s.setLenient(true);
-                d = s.parse(datestring);
-            }
-            return d;
+        // accept date-only format, although it is not RFC 3339
+        if ( str.length() == 10 ) {
+            // input date doesn't specify time zone, so UTC is used as default
+            sdf.setTimeZone( TimeZone.getTimeZone("UTC") );
+            sdf.applyPattern("yyyy-MM-dd");
+            return sdf.parse(str);
         }
 
-        //step one, split off the timezone.
-        String firstpart = datestring.substring(0,datestring.lastIndexOf('-'));
-        String secondpart = datestring.substring(datestring.lastIndexOf('-'));
+        int len = str.length();
+        if ( len < 20 ) throw new ParseException( "Rfc3339:  String too short!", len-1 );
 
-        //step two, remove the colon from the timezone offset
-        secondpart = secondpart.substring(0,secondpart.indexOf(':')) + secondpart.substring(secondpart.indexOf(':')+1);
-        datestring  = firstpart + secondpart;
-        SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ"); //spec for RFC3339
-        try {
-            d = s.parse(datestring);
+        String pattern = "yyyy-MM-dd";
+        if ( str.charAt(10) == 'T' ) {
+            pattern += "'T'";
+        } else if ( str.charAt(10) == 't' ) {
+            pattern += "'t'";
+        } else {
+            throw new ParseException( "Rfc3339:  T not found!", 10 );
         }
-        catch (java.text.ParseException pe) { //try again with optional decimals
-            s = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"); //spec for RFC3339 (with fractional seconds)
-            s.setLenient(true);
-            d = s.parse(datestring);
+        pattern += "HH:mm:ssz";
+
+        // SimpleDateFormat parses milliseconds whereas RFC 3339 specifies fractional seconds
+        // so that using the ".SSS" pattern would lead to wrong results.  As fractional seconds
+        // are rarely used, they're not (yet) implemented here.  TODO
+        if ( str.charAt(19) == '.' ) {
+            throw new ParseException( "Rfc3339:  fractional seconds not implemented!", 19 );
         }
-        return d;
+
+        // modify time zone representation to conform to SDF's "general time zone" format
+        char last = str.charAt(len-1);
+        if ( last == 'Z' || last == 'z' ) {
+            str = str.substring(0, len-1) + "GMT+00:00";
+        } else {
+            str = str.substring(0, len-6) + "GMT" + str.substring(len-6, len);
+        }
+
+        sdf.applyPattern(pattern);
+        return sdf.parse(str);
     }
-
 }
