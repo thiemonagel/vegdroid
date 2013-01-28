@@ -32,11 +32,20 @@ public class DisplayListActivity extends ListActivity {
         setContentView(R.layout.activity_display_list);
         //getActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // allow access by background threads
+        Global.getInstance().listActivity = this;
+
         // make sure MyData is instantiated
         MyData.initInstance(this);
 
         // loading in background thread
         new Load().execute();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Global.getInstance().listActivity = null;
+        super.onDestroy();
     }
 
     @Override
