@@ -12,7 +12,7 @@ public class Venue {
     public  volatile String shortDescription  = "";
     public  volatile String longDescription   = "";
 
-    public  volatile Date   closeDate         = new Date( ~0l>>>1 );
+    public  volatile Date   closeDate         = new Date( ~0l>>>1 );  // in UTC
     public  volatile float  rating            = 0.f;
 
     public  volatile String address1          = "";
@@ -125,5 +125,10 @@ public class Venue {
         if ( mid == -1 )
             throw new IllegalStateException("Id has not been set!");
         return mid;
+    }
+
+    public boolean closed() {
+        Date now = new Date();  // UTC
+        return closeDate.before(now);
     }
 }
