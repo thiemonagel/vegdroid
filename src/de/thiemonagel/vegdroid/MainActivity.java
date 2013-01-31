@@ -69,30 +69,30 @@ public class MainActivity extends Activity {
 
     public void StartFood( View view ) {
         MyData.getInstance().setCatFilter(MASK_FOOD);
-        Intent intent = new Intent(this, DisplayListActivity.class);
+        Intent intent = new Intent(this, MapActivity.class);
         startActivity(intent);
     }
 
     public void StartShop( View view ) {
         MyData.getInstance().setCatFilter(MASK_SHOP);
-        Intent intent = new Intent(this, DisplayListActivity.class);
+        Intent intent = new Intent(this, MapActivity.class);
         startActivity(intent);
     }
 
     public void StartLodge( View view ) {
         MyData.getInstance().setCatFilter(MASK_LODGE);
-        Intent intent = new Intent(this, DisplayListActivity.class);
+        Intent intent = new Intent(this, MapActivity.class);
         startActivity(intent);
     }
 
     public void StartAll( View view ) {
         MyData.getInstance().setCatFilter(MASK_ALL);
-        Intent intent = new Intent(this, DisplayListActivity.class);
+        Intent intent = new Intent(this, MapActivity.class);
         startActivity(intent);
     }
 
     public void StartCustom( View view ) {
-        Intent intent = new Intent(this, DisplayListActivity.class);
+        Intent intent = new Intent(this, MapActivity.class);
         startActivity(intent);
     }
 
