@@ -175,7 +175,7 @@ class LoadStream extends AsyncTask<LatLng, Void, Void> {
                             //ecount++;
                             //Log.v( LOG_TAG, "JSON:     #" + ecount );
                             Venue v = new Venue();
-                            v.parseJson(reader);
+                            v.parseJson(reader, fContext);
 
                             // write to global storage, skip if id doesn't exist
                             // TODO: this may lead to missed updates in case the venue already does exist

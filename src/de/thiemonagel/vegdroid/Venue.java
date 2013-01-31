@@ -3,17 +3,20 @@ package de.thiemonagel.vegdroid;
 import java.io.IOException;
 import java.util.Date;
 
+import android.content.Context;
+
 import com.google.gson.stream.JsonReader;
 
 // all public members are initialized to non-null values
 public class Venue {
-    // TODO: veg_level, category
+    // TODO: veg_level
     public  volatile String name              = "";
     public  volatile String shortDescription  = "";
     public  volatile String longDescription   = "";
 
     public  volatile Date   closeDate         = new Date( ~0l>>>1 );  // in UTC
     public  volatile float  rating            = 0.f;
+    public  volatile int    catMask           = 0;                    // bitmask of categories
 
     public  volatile String address1          = "";
     public  volatile String address2          = "";
@@ -27,7 +30,8 @@ public class Venue {
 
 
     // parse JSON stream into member variables
-    public void parseJson( JsonReader reader ) throws IOException {
+    public void parseJson( JsonReader reader, Context context ) throws IOException {
+        String[] cats = context.getResources().getStringArray(R.array.categories);
         reader.beginObject();
         while ( reader.hasNext() ) {
             String item2 = reader.nextName();
@@ -61,6 +65,18 @@ public class Venue {
                 } catch (NumberFormatException e) {
                     // invalid numbers are ignored
                 }
+            } else if ( item2.equals("categories") ) {
+                reader.beginArray();
+                while ( reader.hasNext() ) {
+                    String catItem = reader.nextString();
+                    for ( int mask = 1, i = 0; i < cats.length; mask <<= 1, i++ ) {
+                        if ( catItem.equals( cats[i] ) ) {
+                            catMask |= mask;
+                            break;
+                        }
+                    }
+                }
+                reader.endArray();
             } else if ( item2.equals("address1") ) {
                 address1 = reader.nextString();
             } else if ( item2.equals("address2") ) {
