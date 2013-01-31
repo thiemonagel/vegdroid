@@ -180,11 +180,14 @@ class LoadStream extends AsyncTask<LatLng, Void, Void> {
                             // write to global storage, skip if id doesn't exist
                             // TODO: this may lead to missed updates in case the venue already does exist
                             try {
-                                Global.getInstance().venues.put( v.getId(), v);
+                                Global.getInstance().venues.put( v.getId(), v );
                             } catch ( IllegalStateException e ) {
                                 Log.e( LOG_TAG, "JSON:     getId() error" );
                                 continue;
                             }
+
+                            // skip closed venues
+                            if ( v.closed() ) continue;
 
                             // work around the fact that by default, multiple AsyncTasks are run
                             // *sequentially* on honeycomb or later
