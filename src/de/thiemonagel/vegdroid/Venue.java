@@ -69,9 +69,9 @@ public class Venue {
                 reader.beginArray();
                 while ( reader.hasNext() ) {
                     String catItem = reader.nextString();
-                    for ( int mask = 1, i = 0; i < cats.length; mask <<= 1, i++ ) {
+                    for ( int i = 0; i < cats.length; i++ ) {
                         if ( catItem.equals( cats[i] ) ) {
-                            catMask |= mask;
+                            catMask |= (1<<i);
                             break;
                         }
                     }
