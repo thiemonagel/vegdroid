@@ -12,8 +12,6 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends Activity {
-    private static final String LOG_TAG    = "VegDroid";
-
     private static final int    MASK_ALL   = 0x3ff;
     private static final int    MASK_FOOD  = 0x00f;
     private static final int    MASK_SHOP  = 0x050;
@@ -38,7 +36,7 @@ public class MainActivity extends Activity {
         // hide "custom" button when category filter has not been customized
         Button bt = (Button) findViewById(R.id.btCustom);
         int filter = MyData.getInstance().getCatFilter() & MASK_ALL;
-        Log.d( LOG_TAG, "onResume() filter: " + filter );
+        Log.d( Global.LOG_TAG, "onResume() filter: " + filter );
         if ( filter == MASK_FOOD || filter == MASK_SHOP || filter == MASK_LODGE || filter == MASK_ALL )
             bt.setVisibility( View.GONE );
         else

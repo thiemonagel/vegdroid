@@ -15,7 +15,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 public class EntryActivity extends Activity {
-    private static final String LOG_TAG = "VegDroid";
     private Venue mVenue;
 
     @Override
@@ -40,7 +39,7 @@ public class EntryActivity extends Activity {
 
         Intent i = getIntent();
         int VenueId = i.getIntExtra( "VenueId", -1 );
-        mVenue = Global.getInstance().venues.get(VenueId);
+        mVenue = Global.getInstance(this).venues.get(VenueId);
         if ( mVenue == null ) {
             // TODO: implement error message
         }

@@ -40,17 +40,11 @@ import com.google.android.gms.maps.model.LatLng;
 public class MyData {
     private static final boolean                     DEBUG         = false;
 
-    private static final String                      PREFS_FILE    = "config";
-    private static final String                      PREFS_CATMASK = "CategoryMask";
-    private static final String                      LOG_TAG       = "VegDroid";
-
     private static final int                         YARDS         = 1760;   // 1760 yards in a mile, who invented that?
 
     private static volatile MyData                   fInstance = null;
 
     private Context                                  fContext;               // required for location manager, among others
-    private int                                      fCatFilterMask;
-    private int                                      fCatFilterMaskApplied;  // last mask committed
     private ArrayList<HashMap<String, String>>       fDataList;              // data currently to be displayed
     private HashMap<String, HashMap<String, String>> fDataMap;               // cache of full information
     private String                                   fError;                 // error message
@@ -59,7 +53,6 @@ public class MyData {
     private Location                                 fCurrentLoc;            // current location
     private Location                                 fLastLoc;               // last location for which data have been loaded
     private Date                                     fLastDate;              // last time data have been loaded
-    private SharedPreferences                        fSettings;
 
 
     private MyData( Context c ) {
@@ -75,7 +68,7 @@ public class MyData {
         // derive preferred units from SIM card country
         TelephonyManager tm = (TelephonyManager)fContext.getSystemService(Context.TELEPHONY_SERVICE);
         String ISO = tm.getSimCountryIso().toLowerCase();
-        Log.i( LOG_TAG, "SIM country ISO: " + ISO );
+        Log.i( Global.LOG_TAG, "SIM country ISO: " + ISO );
 
         // it seems that only USA, GB, Liberia and Burma still use miles:
         // https://en.wikipedia.org/wiki/Imperial_units#Current_use_of_imperial_units
@@ -93,12 +86,6 @@ public class MyData {
             fkm = false;
         else
             fkm = true;
-
-        // load from SharedPreferences
-        fSettings             = c.getSharedPreferences( PREFS_FILE, Context.MODE_PRIVATE );
-        fCatFilterMask        = fSettings.getInt( PREFS_CATMASK, -1 );
-        fCatFilterMaskApplied = fCatFilterMask;
-        Log.d( LOG_TAG, "Read CatFilterMask: " + fCatFilterMask );
     }
 
     // Obtain instance, constructing it if necessary.  Should be called in onCreate() of
@@ -130,37 +117,37 @@ public class MyData {
     // set category index to value val
     public void setCatFilter( int index, boolean val ) {
         if ( val )
-            fCatFilterMask |= (1<<index);
+            mCatFilterMask |= (1<<index);
         else
-            fCatFilterMask &= ~(1<<index);
+            mCatFilterMask &= ~(1<<index);
     }
 
     public void setCatFilter( int mask ) {
-        fCatFilterMask = mask;
+        mCatFilterMask = mask;
     }
 
     public int getCatFilter() {
-        return fCatFilterMask;
+        return mCatFilterMask;
     }
 
     public boolean[] getCatFilterBool() {
         String[] list = fContext.getResources().getStringArray(R.array.categories);
         int len = list.length;
         boolean[] ret = new boolean[len];
-        for ( int mask = fCatFilterMask, i = 0; mask != 0 && i < len; mask >>>= 1, i++ )
+        for ( int mask = mCatFilterMask, i = 0; mask != 0 && i < len; mask >>>= 1, i++ )
             ret[i] = (mask&1)==1 ? true : false;
         return ret;
     }
 
     // commit to SharedPreferences
     public void commitCatFilter() {
-        if ( fCatFilterMask == fCatFilterMaskApplied )
+        if ( mCatFilterMask == mCatFilterMaskApplied )
             return;
 
-        SharedPreferences.Editor editor = fSettings.edit();
-        editor.putInt( PREFS_CATMASK, fCatFilterMask );
+        SharedPreferences.Editor editor = mSettings.edit();
+        editor.putInt( PREFS_CATMASK, mCatFilterMask );
         editor.commit();   // TODO: use apply() instead, requires API 9
-        fCatFilterMaskApplied = fCatFilterMask;
+        mCatFilterMaskApplied = mCatFilterMask;
     }
 
     // return global map
@@ -183,7 +170,7 @@ public class MyData {
         for ( Map.Entry<String, HashMap<String, String>> entry : fDataMap.entrySet() ) {
             String[] list = fContext.getResources().getStringArray(R.array.categories);
             boolean valid = false;
-            for ( int mask = fCatFilterMask, i = 0; mask != 0 && i < list.length; mask >>>= 1, i++ ) {
+            for ( int mask = mCatFilterMask, i = 0; mask != 0 && i < list.length; mask >>>= 1, i++ ) {
                 if ( (mask & 1) == 0 ) continue;
                 if ( entry.getValue().get("categories").contains( list[i] ) ) {
                     valid = true;
@@ -224,7 +211,7 @@ public class MyData {
         // find location
         LocationManager lMan = (LocationManager) fContext.getSystemService(Context.LOCATION_SERVICE);
         List<String> lproviders = lMan.getProviders( false );  // true = enabled only
-        Log.d( LOG_TAG, lproviders.size() + " location providers found." );
+        Log.d( Global.LOG_TAG, lproviders.size() + " location providers found." );
         for ( String prov : lproviders ) {
             Location l = lMan.getLastKnownLocation(prov);
 
@@ -239,7 +226,7 @@ public class MyData {
             } else {
                 logstr += "[empty]";
             }
-            Log.d( LOG_TAG, logstr );
+            Log.d( Global.LOG_TAG, logstr );
 
             if ( l == null )
                 continue;
@@ -292,7 +279,7 @@ public class MyData {
         if ( fCurrentLoc == null ) {
             if ( DEBUG ) {
                 // set bogus location for debugging
-                Log.i( LOG_TAG, "No location found." );
+                Log.i( Global.LOG_TAG, "No location found." );
                 //url += "0,0";
                 fCurrentLoc = new Location("");
                 fCurrentLoc.setLatitude (48.139126);
@@ -335,7 +322,7 @@ public class MyData {
             roundMultiplier = 1f;
             roundDigits     = 0;
         }
-        Log.d( LOG_TAG, "roundMultiplier: " + roundMultiplier );
+        Log.d( Global.LOG_TAG, "roundMultiplier: " + roundMultiplier );
 
         // By default, the website imposes a 5km limit, but I prefer to show the
         // closest venues, even if they are thousands of miles away.
@@ -343,7 +330,7 @@ public class MyData {
                 + fCurrentLoc.getLatitude() + "," + fCurrentLoc.getLongitude()
                 + "?unit=km&distance=100000&limit=" + fNumEntryLimit;
 
-        Log.i( LOG_TAG, "Getting: " +url );
+        Log.i( Global.LOG_TAG, "Getting: " +url );
         HttpClient client = new DefaultHttpClient();  // Apache HTTP client
         client.getParams().setParameter( CoreProtocolPNames.USER_AGENT, R.string.app_name + " " + R.string.version_string );
         HttpGet httpGet = new HttpGet( url );
@@ -354,7 +341,7 @@ public class MyData {
             int statusCode = statusLine.getStatusCode();
             if (statusCode == 200) {
                 HttpEntity entity = response.getEntity();
-                Log.i( LOG_TAG, "Received " + (entity.getContentLength()>>10) + " kiB of entry data." );
+                Log.i( Global.LOG_TAG, "Received " + (entity.getContentLength()>>10) + " kiB of entry data." );
                 InputStream content = entity.getContent();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(content));
                 String line;
@@ -375,14 +362,14 @@ public class MyData {
             return false;
         }
 
-        Log.v( LOG_TAG, builder.toString() );
+        Log.v( Global.LOG_TAG, builder.toString() );
 
         try {
             JSONObject json = new JSONObject(builder.toString());
             JSONArray entries = json.getJSONArray("entries");
             for ( int i = 0; i < entries.length(); i++ ) {
                 JSONObject entry = entries.getJSONObject(i);
-    //            Log.v( LOG_TAG, entry.getString("name") );
+    //            Log.v( Global.LOG_TAG, entry.getString("name") );
 
                 HashMap<String, String> map = new HashMap<String, String>();
                 String keylist[] = {
@@ -410,7 +397,7 @@ public class MyData {
                         if ( closed.before(now) )
                             continue;
                     } catch (ParseException e) {
-                        Log.e( LOG_TAG, "closed_date parse error!" );
+                        Log.e( Global.LOG_TAG, "closed_date parse error!" );
                         continue;
                     }
                 }
@@ -477,7 +464,7 @@ public class MyData {
                     map.put("distance", sd);
 
                 } catch (JSONException e) {
-                    Log.e( LOG_TAG, "uri missing!" );
+                    Log.e( Global.LOG_TAG, "uri missing!" );
                     fError = "URI missing!";
                     return false;
                 }

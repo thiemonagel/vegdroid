@@ -33,7 +33,7 @@ public class DisplayListActivity extends ListActivity {
         //getActionBar().setDisplayHomeAsUpEnabled(true);
 
         // allow access by background threads
-        Global.getInstance().listActivity = this;
+        Global.getInstance(this).listActivity = this;
 
         // make sure MyData is instantiated
         MyData.initInstance(this);
@@ -44,7 +44,7 @@ public class DisplayListActivity extends ListActivity {
 
     @Override
     protected void onDestroy() {
-        Global.getInstance().listActivity = null;
+        Global.getInstance(this).listActivity = null;
         super.onDestroy();
     }
 
@@ -199,13 +199,12 @@ public class DisplayListActivity extends ListActivity {
 
 // http://stackoverflow.com/questions/7380865/android-how-can-you-set-the-value-of-a-ratingbar-within-a-listadapter
 class MyBinder implements android.widget.SimpleAdapter.ViewBinder {
-    private static final String LOG_TAG = "VegDroid";
 
     //@Override
     public boolean setViewValue(View view, Object data, String textRepresentation) {
         if (view.getId() == R.id.ratingBar) {
             String stringval = (String) data;
-            Log.v( LOG_TAG, "rating: "+ stringval );
+            Log.v( Global.LOG_TAG, "rating: "+ stringval );
             float ratingValue = 0f;
             try {
                 ratingValue = Float.parseFloat(stringval);

@@ -11,8 +11,6 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 
 public class AboutActivity extends Activity {
 
-    private static final String                      LOG_TAG       = "VegDroid";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

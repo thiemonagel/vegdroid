@@ -18,8 +18,6 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.Marker;
 
 public class MapActivity extends android.support.v4.app.FragmentActivity {
-    private static final String LOG_TAG   = "VegDroid";
-
     public  volatile GoogleMap           map;
     public  volatile Map<String,Integer> markers = new TreeMap<String,Integer>();
 
@@ -33,7 +31,7 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
             System.setProperty("http.keepAlive", "false");
         }
 
-        Global.getInstance().mapActivity = this;
+        Global.getInstance(this).mapActivity = this;
         MyData.initInstance(this);
         setupMap();
 
@@ -43,7 +41,8 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
 
     @Override
     protected void onDestroy() {
-        Global.getInstance().mapActivity = null;
+        Global.getInstance(this).mapActivity = null;
+        map = null;  // maybe this helps against leaking bandwidth?
         super.onDestroy();
     }
 
