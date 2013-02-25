@@ -1,5 +1,6 @@
 package de.thiemonagel.vegdroid;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -17,9 +18,15 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.Marker;
 
+/**
+ * Activity to display venues as markers on a zoom- and moveable map.
+ *
+ * To receive tap events a map of (Marker.getId() --> venueId) is required.
+ *
+ */
 public class MapActivity extends android.support.v4.app.FragmentActivity {
-    public  volatile GoogleMap           map;
-    public  volatile Map<String,Integer> markers = new TreeMap<String,Integer>();
+    public volatile GoogleMap           map;
+    public volatile Map<String,Integer> markers = Collections.synchronizedMap( new TreeMap<String,Integer>() );  // (Marker.getId() --> venueId)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +69,9 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
             case R.id.menu_about:
                 Intent intent = new Intent(this, AboutActivity.class);
                 startActivity(intent);
+                return true;
+            case R.id.menu_filter_cat:
+                FilterDialog.CreateDialog(this).show();
                 return true;
             case R.id.menu_list:
                 intent = new Intent(this, DisplayListActivity.class);

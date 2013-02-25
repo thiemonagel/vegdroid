@@ -114,42 +114,6 @@ public class MyData {
     public String getError()   { return fError; }
     public void   clearError() { fError = "";   }
 
-    // set category index to value val
-    public void setCatFilter( int index, boolean val ) {
-        if ( val )
-            mCatFilterMask |= (1<<index);
-        else
-            mCatFilterMask &= ~(1<<index);
-    }
-
-    public void setCatFilter( int mask ) {
-        mCatFilterMask = mask;
-    }
-
-    public int getCatFilter() {
-        return mCatFilterMask;
-    }
-
-    public boolean[] getCatFilterBool() {
-        String[] list = fContext.getResources().getStringArray(R.array.categories);
-        int len = list.length;
-        boolean[] ret = new boolean[len];
-        for ( int mask = mCatFilterMask, i = 0; mask != 0 && i < len; mask >>>= 1, i++ )
-            ret[i] = (mask&1)==1 ? true : false;
-        return ret;
-    }
-
-    // commit to SharedPreferences
-    public void commitCatFilter() {
-        if ( mCatFilterMask == mCatFilterMaskApplied )
-            return;
-
-        SharedPreferences.Editor editor = mSettings.edit();
-        editor.putInt( PREFS_CATMASK, mCatFilterMask );
-        editor.commit();   // TODO: use apply() instead, requires API 9
-        mCatFilterMaskApplied = mCatFilterMask;
-    }
-
     // return global map
     public HashMap<String, HashMap<String, String>> getMap() {
         return fDataMap;
@@ -162,7 +126,7 @@ public class MyData {
 
     // recreate current display list (must be run after data has been loaded or
     // filters have been updated)
-    public void updateList() {
+    public void updateList(Context context) {
         // empty list
         fDataList.clear();
 
@@ -170,7 +134,7 @@ public class MyData {
         for ( Map.Entry<String, HashMap<String, String>> entry : fDataMap.entrySet() ) {
             String[] list = fContext.getResources().getStringArray(R.array.categories);
             boolean valid = false;
-            for ( int mask = mCatFilterMask, i = 0; mask != 0 && i < list.length; mask >>>= 1, i++ ) {
+            for ( int mask = Global.getInstance(context).getCatFilterMask(), i = 0; mask != 0 && i < list.length; mask >>>= 1, i++ ) {
                 if ( (mask & 1) == 0 ) continue;
                 if ( entry.getValue().get("categories").contains( list[i] ) ) {
                     valid = true;
