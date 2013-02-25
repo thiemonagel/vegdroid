@@ -36,7 +36,11 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
-// Singleton containing data to be displayed
+/**
+ *
+ * DEPRECATED: Singleton containing data to be displayed
+ *
+ */
 public class MyData {
     private static final boolean                     DEBUG         = false;
 
