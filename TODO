@@ -21,10 +21,10 @@ TODO
     to revoke that consent, as required by 10.1.1 (j) "Geolocation Privacy"
   o ensure that geodata from Google is not cached for longer than 30 days,
     as required by 10.1.3 (b) "No Pre-Fetching, Caching or Storage of Content"
-* implement "GeoCache" for geocodes?
 * improve map view
   o cancel background tasks when MapActivity loses focus?
   o what happens to onPostExecute() when it's called after MapActivity has lost focus?
+* add JUnit tests for CachingGeoCoder?
 * improve ListActivity and EntryActivity
   o add entries' opening times
   o add users' reviews
@@ -53,6 +53,7 @@ BUGS
 
 DONE
 ====
+* implement "GeoCache" for geocodes
 * network
   o use https for server contact as possible sensitive data (location) is transferred
 * add "food only" option somewhere?
