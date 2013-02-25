@@ -39,7 +39,6 @@ TODO
     http://android-developers.blogspot.de/2011/09/androids-http-clients.html
     https://developer.android.com/training/basics/network-ops/connecting.html
   o use gzip transport compression
-  o use https for server contact as possible sensitive data (location) is transferred
 * migrate to entry class instead of hash
 * submit to F-droid store?
 
@@ -54,6 +53,8 @@ BUGS
 
 DONE
 ====
+* network
+  o use https for server contact as possible sensitive data (location) is transferred
 * add "food only" option somewhere?
 * test Hotel/B&B match (possible ampersand encoding issue)
 * display GSON license to users

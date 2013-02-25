@@ -168,7 +168,7 @@ class LoadStream extends AsyncTask<LatLng, Void, Void> {
 
         try {
             LatLng ll = llarray[0];
-            String urlstring = "http://www.vegguide.org/search/by-lat-long/";
+            String urlstring = "https://www.vegguide.org/search/by-lat-long/";
             urlstring += ll.latitude + "," + ll.longitude;
             urlstring += "?unit=km&distance=200&limit=100";
             Log.d( Global.LOG_TAG, "request: " + urlstring );
