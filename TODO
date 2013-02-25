@@ -6,7 +6,6 @@ MISSING FEATURES
   o implement region downloading and caching
   o obtain time zone from region
 * implement list sorting by name, distance, rating...
-* add "food only" option somewhere?
 * adapt layout to tablets
 * update list when location is changing
   o request location provider callbacks
@@ -55,6 +54,7 @@ BUGS
 
 DONE
 ====
+* add "food only" option somewhere?
 * test Hotel/B&B match (possible ampersand encoding issue)
 * display GSON license to users
 * improve MainActivity

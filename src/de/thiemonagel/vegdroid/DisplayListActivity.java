@@ -20,6 +20,11 @@ import android.widget.RatingBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+/**
+ *
+ * TODO: switch to "Global" implementation instead of "MyData"
+ *
+ */
 public class DisplayListActivity extends ListActivity {
 
     // Progress Dialog
