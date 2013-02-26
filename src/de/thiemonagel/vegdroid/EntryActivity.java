@@ -91,7 +91,7 @@ public class EntryActivity extends Activity {
 
     public void clickMap( View view ) {
         // the name of the venue is not included in the query string because
-        // it seems to cause problems when Google isn't aware of it
+        // it seems to cause problems when Google isn't aware of the specific venue
         String uri = "geo:0,0?q=" + mVenue.locString();
         Intent intent = new Intent( Intent.ACTION_VIEW );
         intent.setData( Uri.parse(uri) );
