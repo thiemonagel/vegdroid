@@ -61,6 +61,7 @@
             android:paddingLeft="15dp"
             android:textSize="13sp" />
 
+        <!--
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -77,6 +78,7 @@
                 android:onClick="clickMap" />
 
         </LinearLayout>
+        -->
 
         <TextView
             android:id="@+id/Contact"

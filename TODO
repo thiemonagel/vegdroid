@@ -25,7 +25,8 @@ TODO
   o cancel background tasks when MapActivity loses focus?
   o what happens to onPostExecute() when it's called after MapActivity has lost focus?
 * add JUnit tests for CachingGeoCoder?
-* improve ListActivity and EntryActivity
+* improve EntryActivity
+  o add "map" and "directions" buttons
   o add entries' opening times
   o add users' reviews
   o add link to web page to allow users to rate and review
