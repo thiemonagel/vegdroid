@@ -13,6 +13,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Handler;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -37,16 +38,21 @@ public class CachingGeoCoder {
         }
     }
 
-    public synchronized void Resolve( Context context, Venue v ) {
-        LatLngTimestamp llt = mCache.get(v.locString());
+    public synchronized void Resolve( final Context context, final Venue v ) {
+        final LatLngTimestamp llt = mCache.get(v.locString());
         if ( llt != null ) {
             if ( llt.expired() ) {
                 mCache.remove(v.locString());
             } else {
-                // warning: duplicated code!
-                MapActivity ma = Global.getInstance(context).mapActivity;
-                if ( ma == null ) return;
-                ma.addMarker( context, v.getId(), llt.ll );
+                Handler guiThread = new Handler( context.getMainLooper() );
+                guiThread.post( new Runnable() {
+                    public void run() {
+                        // warning: duplicated code!
+                        MapActivity ma = Global.getInstance(context).mapActivity;
+                        if ( ma == null ) return;
+                        ma.addMarker( context, v.getId(), llt.ll );
+                    }
+                });
             }
         }
 
