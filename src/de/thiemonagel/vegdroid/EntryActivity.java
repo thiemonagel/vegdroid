@@ -42,6 +42,7 @@ public class EntryActivity extends Activity {
         mVenue = Global.getInstance(this).venues.get(VenueId);
         if ( mVenue == null ) {
             // TODO: implement error message
+            return;
         }
 
         {
