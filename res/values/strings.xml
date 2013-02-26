@@ -16,7 +16,7 @@
     <string name="title_activity_display_list">VegDroid</string>
     <string name="title_activity_entry">VegDroid</string>
     <string name="title_activity_map">VegDroid</string>
-    <string name="version_string">0.1.6 (alpha)</string>
+    <string name="version_string">0.1.7 (alpha)</string>
 
     <string-array name="categories">
         <item>Restaurant</item>
