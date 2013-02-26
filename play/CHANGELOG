@@ -1,3 +1,8 @@
+0.1.8 (alpha)
+Map view has matured somewhat and is used by default now.  Zooming and panning is
+possible, but does not (yet) trigger a reload of the corresponding entries.
+[Silently fix one or two crashes.]
+
 0.1.7 (alpha)
 Map view has matured somewhat and is used by default now.  Zooming and panning is
 possible, but does not (yet) trigger a reload of the corresponding entries.

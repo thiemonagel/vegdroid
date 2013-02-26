@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.thiemonagel.vegdroid"
     android:installLocation="auto"
-    android:versionCode="8"
-    android:versionName="0.1.7 (alpha)" >
+    android:versionCode="9"
+    android:versionName="0.1.8 (alpha)" >
 
     <!--
         current version distribution: https://developer.android.com/about/dashboards/index.html
