@@ -80,7 +80,7 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
                 FilterDialog.CreateDialog(this).show();
                 return true;
             case R.id.menu_list:
-                intent = new Intent(this, DisplayListActivity.class);
+                intent = new Intent(this, EntryListActivity.class);
                 startActivity(intent);
                 return true;
             default:

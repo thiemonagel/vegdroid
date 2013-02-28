@@ -81,8 +81,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="de.thiemonagel.vegdroid.DisplayListActivity"
-            android:label="@string/title_activity_display_list" >
+            android:name="de.thiemonagel.vegdroid.EntryListActivity"
+            android:label="@string/title_activity_entry_list" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.thiemonagel.vegdroid.MainActivity" />

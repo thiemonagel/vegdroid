@@ -29,7 +29,7 @@ public class Global {
     public static final String          LOG_TAG = "VegDroid";
 
     public volatile MapActivity         mapActivity;  // provide access to activity for LoadGeoCode
-    public volatile DisplayListActivity listActivity; // provide access to activity
+    public volatile EntryListActivity   listActivity; // provide access to activity
     public volatile Map<Integer,Venue>  venues = Collections.synchronizedMap( new TreeMap<Integer,Venue>() );  // data store
 
     public volatile CachingGeoCoder     CGC = new CachingGeoCoder();

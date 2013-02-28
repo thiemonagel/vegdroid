@@ -13,7 +13,7 @@
     <string name="popup_title_filter_cat">Categories to be displayed</string>
     <string name="title_activity_about">About</string>
     <string name="title_activity_main">VegDroid</string>
-    <string name="title_activity_display_list">VegDroid</string>
+    <string name="title_activity_entry_list">VegDroid</string>
     <string name="title_activity_entry">VegDroid</string>
     <string name="title_activity_map">VegDroid</string>
     <string name="version_string">0.1.8 (alpha)</string>
