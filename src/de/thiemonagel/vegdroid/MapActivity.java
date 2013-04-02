@@ -9,9 +9,11 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 
+
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
@@ -28,8 +30,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
  * To filter venues, a mapping of Marker <--> venueId is required.
  *
  */
-public class MapActivity extends android.support.v4.app.FragmentActivity {
+public class MapActivity extends SherlockFragmentActivity {
     public volatile GoogleMap           map;
+    private SupportMapFragment          fMap;
 
     private Map<Marker,Integer> markers = new HashMap<Marker,Integer>();  // (Marker --> venueId)
     private Map<Integer,Marker> venues  = new HashMap<Integer,Marker>();  // (venueId --> Marker)
@@ -39,6 +42,16 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        fMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
+
+        if (savedInstanceState == null ) {
+            //first time fragment is set
+            fMap.setRetainInstance(true);
+        } else {
+            //previous map keeps from reinitializing every time.
+            map = fMap.getMap();
+        }
+
         // Work around pre-Froyo bugs in HTTP connection reuse.
         if ( Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO ) {
             System.setProperty("http.keepAlive", "false");
@@ -46,7 +59,7 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
 
         Global.getInstance(this).mapActivity = this;
         MyData.initInstance(this);
-        setupMap();
+        setupMapIfNeeded();
 
         new LoadStream(this)
                 .execute( MyData.getInstance().getLocation() );
@@ -62,7 +75,7 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.activity_map, menu);
+        getSupportMenuInflater().inflate(R.menu.activity_map, menu);
         return true;
     }
 
@@ -88,11 +101,16 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
         }
     }
 
-    private void setupMap() {
-        if ( map != null )
-            return;
+    private void setupMapIfNeeded() {
+        if ( map == null ) {
+            map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+        }
+        if ( map != null) {
+            setupMap();
+        }
+    }
 
-        map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+        private void setupMap() {
         map.setMyLocationEnabled(true);
         UiSettings ui = map.getUiSettings();
         ui.setCompassEnabled(true);
