@@ -1,15 +1,15 @@
 package de.thiemonagel.vegdroid;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockActivity;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
-public class AboutActivity extends Activity {
+public class AboutActivity extends SherlockActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
