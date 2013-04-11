@@ -42,7 +42,6 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
     @Override
     protected void onDestroy() {
         Global.getInstance(this).mapActivity = null;
-        map = null;  // maybe this helps against leaking bandwidth?
         super.onDestroy();
     }
 
