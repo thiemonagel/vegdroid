@@ -1,17 +1,19 @@
 package de.thiemonagel.vegdroid;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Html;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends Activity {
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
+public class MainActivity extends SherlockActivity {
     private static final int    MASK_ALL   = 0x3ff;
     private static final int    MASK_FOOD  = 0x00f;
     private static final int    MASK_SHOP  = 0x050;
@@ -45,7 +47,7 @@ public class MainActivity extends Activity {
 
         @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_main, menu);
+        getSupportMenuInflater().inflate(R.menu.activity_main, menu);
         return true;
     }
 
@@ -53,7 +55,7 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
         switch (item.getItemId()) {
-            case android.R.id.home:  // no idea what this is for
+            case android.R.id.home:  // no idea what this is for. This a a link to your icon in the actionbar. Most people set it to the home Screen of the app.
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
             case R.id.menu_about:
