@@ -1,55 +1,50 @@
-                    The Apache Software Foundation
-     Individual Contributor License Agreement ("Agreement") V2.0
-                   http://www.apache.org/licenses/
+     Individual Contributor License Agreement ("ICLA", "Agreement")
 
-Thank you for your interest in The Apache Software Foundation (the
-"Foundation"). In order to clarify the intellectual property license
-granted with Contributions from any person or entity, the Foundation
-must have a Contributor License Agreement ("CLA") on file that has
-been signed by each Contributor, indicating agreement to the license
-terms below. This license is for your protection as a Contributor as
-well as the protection of the Foundation and its users; it does not
-change your rights to use your own Contributions for any other purpose.
-If you have not already done so, please complete and sign, then scan
-and email a pdf file of this Agreement to secretary@apache.org.
-Alternatively, you may send it by facsimile to the Foundation at
-+1-919-573-9199. If necessary, send an original signed Agreement to
-The Apache Software Foundation, Dept. 9660, Los Angeles,
-CA 90084-9660, U.S.A. Please read this document carefully before
-signing and keep a copy for your records.
+The Publisher of VegDroid asks all Contributors to (electronically)
+sign an ICLA to clarify the conditions under which a Contribution is
+made.  Such is recommended [1] and common practice [2][3] to protect
+community-developed open source software from legal troubles.
 
-  Full name: ______________________________________________________
+[1] http://wiki.civiccommons.org/Contributor_Agreements
+[2] http://apache.org/licenses/icla.txt
+[3] https://developers.google.com/open-source/cla/individual
 
-  (optional) Public name: _________________________________________
+For lack of a dedicated publishing organization, the Publisher of
+VegDroid currently is:
 
-  Mailing Address: ________________________________________________
+  Thiemo Nagel
+  Johann-Clanze-Str. 36
+  D-81369 München
+  Germany
+  thiemo.nagel@gmail.com
 
-                   ________________________________________________
+The Publisher may decide to transfer control of VegDroid to a
+recognized non-profit organization, in which case that organization
+will be the Publisher of VegDroid from thereon and enter this
+Agreement in lieu of the now-current Publisher.
 
-  Country:   ______________________________________________________
-
-  Telephone: ______________________________________________________
-
-  E-Mail:    ______________________________________________________
-
-  (optional) preferred Apache id(s): ______________________________
-
-  (optional) notify project: ______________________________________
+This license is for your protection as a Contributor as well as the
+protection of the Publisher and its users; it does not change your
+rights to use your own Contributions for any other purpose.  If you'd
+like to contribute to VegDroid, please complete and (electronically)
+sign this Agreement and then email it to thiemo.nagel@gmail.com.
+Please read this document carefully before signing and keep a copy for
+your records.
 
 You accept and agree to the following terms and conditions for Your
-present and future Contributions submitted to the Foundation. In
-return, the Foundation shall not use Your Contributions in a way that
+present and future Contributions submitted to the Publisher. In
+return, the Publisher shall not use Your Contributions in a way that
 is contrary to the public benefit or inconsistent with its nonprofit
 status and bylaws in effect at the time of the Contribution. Except
-for the license granted herein to the Foundation and recipients of
-software distributed by the Foundation, You reserve all right, title,
+for the license granted herein to the Publisher and recipients of
+software distributed by the Publisher, You reserve all right, title,
 and interest in and to Your Contributions.
 
 1. Definitions.
 
    "You" (or "Your") shall mean the copyright owner or legal entity
    authorized by the copyright owner that is making this Agreement
-   with the Foundation. For legal entities, the entity making a
+   with the Publisher. For legal entities, the entity making a
    Contribution and all other entities that control, are controlled
    by, or are under common control with that entity are considered to
    be a single Contributor. For the purposes of this definition,
@@ -60,29 +55,38 @@ and interest in and to Your Contributions.
 
    "Contribution" shall mean any original work of authorship,
    including any modifications or additions to an existing work, that
-   is intentionally submitted by You to the Foundation for inclusion
+   is intentionally submitted by You to the Publisher for inclusion
    in, or documentation of, any of the products owned or managed by
-   the Foundation (the "Work"). For the purposes of this definition,
+   the Publisher (the "Work"). For the purposes of this definition,
    "submitted" means any form of electronic, verbal, or written
-   communication sent to the Foundation or its representatives,
+   communication sent to the Publisher or its representatives,
    including but not limited to communication on electronic mailing
    lists, source code control systems, and issue tracking systems that
-   are managed by, or on behalf of, the Foundation for the purpose of
+   are managed by, or on behalf of, the Publisher for the purpose of
    discussing and improving the Work, but excluding communication that
    is conspicuously marked or otherwise designated in writing by You
    as "Not a Contribution."
 
 2. Grant of Copyright License. Subject to the terms and conditions of
-   this Agreement, You hereby grant to the Foundation and to
-   recipients of software distributed by the Foundation a perpetual,
+   this Agreement, You hereby grant to the Publisher and to
+   recipients of software distributed by the Publisher a perpetual,
    worldwide, non-exclusive, no-charge, royalty-free, irrevocable
    copyright license to reproduce, prepare derivative works of,
    publicly display, publicly perform, sublicense, and distribute Your
-   Contributions and such derivative works.
+   Contributions and such derivative works under the condition that
+   this is done under a license which is approved by the Open Source
+   Initiative:
+
+   Open Source Initiative
+   855 El Camino Real
+   Ste 13A, #270
+   Palo Alto, CA 94301
+   United States
+   http://opensource.org/
 
 3. Grant of Patent License. Subject to the terms and conditions of
-   this Agreement, You hereby grant to the Foundation and to
-   recipients of software distributed by the Foundation a perpetual,
+   this Agreement, You hereby grant to the Publisher and to
+   recipients of software distributed by the Publisher a perpetual,
    worldwide, non-exclusive, no-charge, royalty-free, irrevocable
    (except as stated in this section) patent license to make, have
    made, use, offer to sell, sell, import, and otherwise transfer the
@@ -103,8 +107,8 @@ and interest in and to Your Contributions.
    that you create that includes your Contributions, you represent
    that you have received permission to make Contributions on behalf
    of that employer, that your employer has waived such rights for
-   your Contributions to the Foundation, or that your employer has
-   executed a separate Corporate CLA with the Foundation.
+   your Contributions to the Publisher, or that your employer has
+   executed a separate Corporate CLA with the Publisher.
 
 5. You represent that each of Your Contributions is Your original
    creation (see section 7 for submissions on behalf of others).  You
@@ -124,16 +128,35 @@ and interest in and to Your Contributions.
    INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A PARTICULAR PURPOSE.
 
 7. Should You wish to submit work that is not Your original creation,
-   You may submit it to the Foundation separately from any
+   You may submit it to the Publisher separately from any
    Contribution, identifying the complete details of its source and of
    any license or other restriction (including, but not limited to,
    related patents, trademarks, and license agreements) of which you
    are personally aware, and conspicuously marking the work as
    "Submitted on behalf of a third-party: [named here]".
 
-8. You agree to notify the Foundation of any facts or circumstances of
+8. You agree to notify the Publisher of any facts or circumstances of
    which you become aware that would make these representations
    inaccurate in any respect.
 
-Please sign: __________________________________ Date: ________________
+
+  Full name: ______________________________________________________
+
+  (optional) Public (nick-)name:___________________________________
+
+  Mailing Address: ________________________________________________
+
+                   ________________________________________________
+
+  Country:   ______________________________________________________
+
+  Telephone: ______________________________________________________
+
+  E-Mail:    ______________________________________________________
+
+
+  Electronic Signature:
+
+  Date: ________________
+  Type "I AGREE" to accept the terms above: _______________________
 
