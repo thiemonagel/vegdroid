@@ -83,9 +83,9 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
 
 
-<h2>Google Gson License</h2>
+<h2>Gson and ActionBarSherlock License</h2>
 
-<p>The following applies to the Google Gson library which is used in
+<p>The following applies to the Gson and ActionBarSherlock libraries which are used in
 and packaged together with this app:</p>
 
 <p>                                 Apache License<br />
@@ -277,7 +277,7 @@ and packaged together with this app:</p>
       same "printed page" as the copyright notice for easier
       identification within third-party archives.</p>
 
-<p>Copyright 2008-2011 Google Inc.</p>
+<p>Copyright [yyyy] [name of copyright owner]</p>
 
 <p>Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
