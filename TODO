@@ -21,11 +21,12 @@ TODO
     to revoke that consent, as required by 10.1.1 (j) "Geolocation Privacy"
   o ensure that geodata from Google is not cached for longer than 30 days,
     as required by 10.1.3 (b) "No Pre-Fetching, Caching or Storage of Content"
-* implement "GeoCache" for geocodes?
 * improve map view
   o cancel background tasks when MapActivity loses focus?
   o what happens to onPostExecute() when it's called after MapActivity has lost focus?
-* improve ListActivity and EntryActivity
+* add JUnit tests for CachingGeoCoder?
+* improve EntryActivity
+  o add "map" and "directions" buttons
   o add entries' opening times
   o add users' reviews
   o add link to web page to allow users to rate and review
@@ -39,7 +40,6 @@ TODO
     http://android-developers.blogspot.de/2011/09/androids-http-clients.html
     https://developer.android.com/training/basics/network-ops/connecting.html
   o use gzip transport compression
-  o use https for server contact as possible sensitive data (location) is transferred
 * migrate to entry class instead of hash
 * submit to F-droid store?
 
@@ -54,6 +54,9 @@ BUGS
 
 DONE
 ====
+* implement "GeoCache" for geocodes
+* network
+  o use https for server contact as possible sensitive data (location) is transferred
 * add "food only" option somewhere?
 * test Hotel/B&B match (possible ampersand encoding issue)
 * display GSON license to users

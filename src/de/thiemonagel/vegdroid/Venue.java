@@ -23,6 +23,7 @@ public class Venue {
     public  volatile String city              = "";
     public  volatile String postCode          = "";
     public  volatile String neighborhood      = "";
+    public  volatile String country           = "";
     public  volatile String phone             = "";
     public  volatile String website           = "";
 
@@ -87,6 +88,8 @@ public class Venue {
                 postCode = reader.nextString();
             } else if ( item2.equals("neighborhood") ) {
                 neighborhood = reader.nextString();
+            } else if ( item2.equals("country") ) {
+                country = reader.nextString();
             } else if ( item2.equals("phone") ) {
                 phone = reader.nextString();
             } else if ( item2.equals("website") ) {
@@ -107,6 +110,7 @@ public class Venue {
         loc += ( address2.equals("") ? "" : (loc.equals("")?"":", ") + address2 );
         loc += ( city    .equals("") ? "" : (loc.equals("")?"":", ") + city     );
         loc += ( postCode.equals("") ? "" : (loc.equals("")?"":", ") + postCode );
+        loc += ( country .equals("") ? "" : (loc.equals("")?"":", ") + country  );
         return loc;
     }
 

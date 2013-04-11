@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.thiemonagel.vegdroid"
     android:installLocation="auto"
-    android:versionCode="7"
-    android:versionName="@string/version_string" >
+    android:versionCode="9"
+    android:versionName="0.1.8 (alpha)" >
 
     <!--
         current version distribution: https://developer.android.com/about/dashboards/index.html
@@ -81,8 +81,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="de.thiemonagel.vegdroid.DisplayListActivity"
-            android:label="@string/title_activity_display_list" >
+            android:name="de.thiemonagel.vegdroid.EntryListActivity"
+            android:label="@string/title_activity_entry_list" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.thiemonagel.vegdroid.MainActivity" />

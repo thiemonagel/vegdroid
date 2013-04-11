@@ -9,28 +9,18 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.util.Log;
 
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.stream.JsonReader;
 
 public class Global {
@@ -39,7 +29,7 @@ public class Global {
     public static final String          LOG_TAG = "VegDroid";
 
     public volatile MapActivity         mapActivity;  // provide access to activity for LoadGeoCode
-    public volatile DisplayListActivity listActivity; // provide access to activity
+    public volatile EntryListActivity   listActivity; // provide access to activity
     public volatile Map<Integer,Venue>  venues = Collections.synchronizedMap( new TreeMap<Integer,Venue>() );  // data store
 
     public volatile CachingGeoCoder     CGC = new CachingGeoCoder();
@@ -168,7 +158,7 @@ class LoadStream extends AsyncTask<LatLng, Void, Void> {
 
         try {
             LatLng ll = llarray[0];
-            String urlstring = "http://www.vegguide.org/search/by-lat-long/";
+            String urlstring = "https://www.vegguide.org/search/by-lat-long/";
             urlstring += ll.latitude + "," + ll.longitude;
             urlstring += "?unit=km&distance=200&limit=100";
             Log.d( Global.LOG_TAG, "request: " + urlstring );

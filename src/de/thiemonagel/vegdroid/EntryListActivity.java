@@ -25,7 +25,7 @@ import android.widget.TextView;
  * TODO: switch to "Global" implementation instead of "MyData"
  *
  */
-public class DisplayListActivity extends ListActivity {
+public class EntryListActivity extends ListActivity {
 
     // Progress Dialog
     private ProgressDialog pDialog;
@@ -33,7 +33,7 @@ public class DisplayListActivity extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display_list);
+        setContentView(R.layout.activity_entry_list);
         //getActionBar().setDisplayHomeAsUpEnabled(true);
 
         // allow access by background threads
@@ -55,7 +55,7 @@ public class DisplayListActivity extends ListActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate( R.menu.activity_display_list, menu );
+        inflater.inflate( R.menu.activity_entry_list, menu );
         return true;
     }
 
@@ -84,7 +84,7 @@ public class DisplayListActivity extends ListActivity {
     // TODO: maybe some of these things may be skipped upon a repeated call of update() ???
     public void update() {
         SimpleAdapter adapter = new SimpleAdapter(
-                DisplayListActivity.this, MyData.getInstance().getList(), R.layout.list_item,
+                EntryListActivity.this, MyData.getInstance().getList(), R.layout.list_item,
                 new String[] { "name",    "distance",    "cats_vlevel",   "short_description",    "uri",    "weighted_rating" },
                 new int[]    { R.id.name, R.id.distance, R.id.categories, R.id.short_description, R.id.uri, R.id.ratingBar } );
 
@@ -129,7 +129,7 @@ public class DisplayListActivity extends ListActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(DisplayListActivity.this);
+            pDialog = new ProgressDialog(EntryListActivity.this);
             pDialog.setMessage("Loading. Please wait...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
@@ -157,7 +157,7 @@ public class DisplayListActivity extends ListActivity {
 
             // show error, TODO: fix back button behaviour
             if ( !MyData.getInstance().getError().equals("") ) {
-                AlertDialog.Builder b = new AlertDialog.Builder(DisplayListActivity.this);
+                AlertDialog.Builder b = new AlertDialog.Builder(EntryListActivity.this);
                 b   .setMessage( MyData.getInstance().getError() )
                     .setTitle( "Error" )
                     .create()
@@ -168,7 +168,7 @@ public class DisplayListActivity extends ListActivity {
             // updating UI from Background Thread
             runOnUiThread(new Runnable() {
                 public void run() {
-                    DisplayListActivity.this.update();
+                    EntryListActivity.this.update();
                 }
             });
 

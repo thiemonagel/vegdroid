@@ -294,7 +294,7 @@ public class MyData {
 
         // By default, the website imposes a 5km limit, but I prefer to show the
         // closest venues, even if they are thousands of miles away.
-        String url = "http://www.vegguide.org/search/by-lat-long/"
+        String url = "https://www.vegguide.org/search/by-lat-long/"
                 + fCurrentLoc.getLatitude() + "," + fCurrentLoc.getLongitude()
                 + "?unit=km&distance=100000&limit=" + fNumEntryLimit;
 

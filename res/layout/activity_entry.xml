@@ -3,14 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="2dp"
         android:paddingRight="2dp"
         android:orientation="vertical" >
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
@@ -61,7 +61,8 @@
             android:paddingLeft="15dp"
             android:textSize="13sp" />
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <!--
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -77,6 +78,7 @@
                 android:onClick="clickMap" />
 
         </LinearLayout>
+        -->
 
         <TextView
             android:id="@+id/Contact"
@@ -87,7 +89,7 @@
             android:textStyle="bold"
             android:text="Contact:" />
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
