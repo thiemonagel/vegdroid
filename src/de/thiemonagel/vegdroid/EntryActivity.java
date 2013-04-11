@@ -1,20 +1,22 @@
 package de.thiemonagel.vegdroid;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.view.Menu;
-import android.view.MenuItem;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-public class EntryActivity extends Activity {
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
+public class EntryActivity extends SherlockActivity {
     private Venue mVenue;
 
     @Override
@@ -86,7 +88,7 @@ public class EntryActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_entry, menu);
+        getSupportMenuInflater().inflate(R.menu.activity_entry, menu);
         return true;
     }
 
