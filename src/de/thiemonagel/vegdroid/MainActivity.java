@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
 
         // hide "custom" button when category filter has not been customized
         Button bt = (Button) findViewById(R.id.btCustom);
-        int filter = MyData.getInstance().getCatFilter() & MASK_ALL;
+        int filter = Global.getInstance(this).getCatFilterMask() & MASK_ALL;
         Log.d( Global.LOG_TAG, "onResume() filter: " + filter );
         if ( filter == MASK_FOOD || filter == MASK_SHOP || filter == MASK_LODGE || filter == MASK_ALL )
             bt.setVisibility( View.GONE );
@@ -66,25 +66,25 @@ public class MainActivity extends Activity {
     }
 
     public void StartFood( View view ) {
-        MyData.getInstance().setCatFilter(MASK_FOOD);
+        Global.getInstance(this).setCatFilterMask(MASK_FOOD);
         Intent intent = new Intent(this, MapActivity.class);
         startActivity(intent);
     }
 
     public void StartShop( View view ) {
-        MyData.getInstance().setCatFilter(MASK_SHOP);
+        Global.getInstance(this).setCatFilterMask(MASK_SHOP);
         Intent intent = new Intent(this, MapActivity.class);
         startActivity(intent);
     }
 
     public void StartLodge( View view ) {
-        MyData.getInstance().setCatFilter(MASK_LODGE);
+        Global.getInstance(this).setCatFilterMask(MASK_LODGE);
         Intent intent = new Intent(this, MapActivity.class);
         startActivity(intent);
     }
 
     public void StartAll( View view ) {
-        MyData.getInstance().setCatFilter(MASK_ALL);
+        Global.getInstance(this).setCatFilterMask(MASK_ALL);
         Intent intent = new Intent(this, MapActivity.class);
         startActivity(intent);
     }

@@ -1,8 +1,10 @@
 package de.thiemonagel.vegdroid;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
-import java.util.TreeMap;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,11 +17,22 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
+/**
+ * Activity to display venues as markers on a zoom- and moveable map.
+ *
+ * To receive tap events a map of (Marker.getId() --> venueId) is required.
+ * To filter venues, a mapping of Marker <--> venueId is required.
+ *
+ */
 public class MapActivity extends android.support.v4.app.FragmentActivity {
-    public  volatile GoogleMap           map;
-    public  volatile Map<String,Integer> markers = new TreeMap<String,Integer>();
+    public volatile GoogleMap           map;
+
+    private Map<Marker,Integer> markers = new HashMap<Marker,Integer>();  // (Marker --> venueId)
+    private Map<Integer,Marker> venues  = new HashMap<Integer,Marker>();  // (venueId --> Marker)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +75,9 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
                 Intent intent = new Intent(this, AboutActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.menu_filter_cat:
+                FilterDialog.CreateDialog(this).show();
+                return true;
             case R.id.menu_list:
                 intent = new Intent(this, DisplayListActivity.class);
                 startActivity(intent);
@@ -88,7 +104,7 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
 
         map.setOnInfoWindowClickListener( new OnInfoWindowClickListener() {
             public void onInfoWindowClick( Marker m ) {
-                int VenueId = markers.get( m.getId() );
+                int VenueId = markers.get( m );
                 Intent in = new Intent( getApplicationContext(), EntryActivity.class );
                 in.putExtra( "VenueId", VenueId );
                 startActivity(in);
@@ -154,4 +170,43 @@ public class MapActivity extends android.support.v4.app.FragmentActivity {
         */
     }
 
+    public synchronized void addMarker( Context context, int vId, LatLng ll ) {
+        if ( map == null ) return;
+
+        Venue v = Global.getInstance(context).venues.get(vId);
+        if ( v == null || v.filtered(context) ) return;
+
+        String name = Global.getInstance(context).venues.get(vId).name;
+        String desc = Global.getInstance(context).venues.get(vId).shortDescription;
+        MarkerOptions mo = new MarkerOptions()
+                .position(ll)
+                .title(name)
+                .snippet(desc);
+        Marker m = map.addMarker( mo );
+        if ( m == null ) return;
+
+        markers.put( m, vId );
+        venues .put( vId, m );
+    }
+
+    public synchronized void updateFilter( Context context ) {
+        for ( Iterator<Map.Entry<Marker, Integer>> it = markers.entrySet().iterator(); it.hasNext(); ) {
+            Map.Entry<Marker, Integer> entry = it.next();
+            Marker  m   = entry.getKey();
+            Integer vId = entry.getValue();
+            Venue   v   = Global.getInstance(context).venues.get(vId);
+            if ( v == null || v.filtered(context) ) {
+                venues.remove(vId);  // remove from MapActivity.venues map
+                m.remove();          // remove from map
+                it.remove();         // remove from MapActivity.markes map
+            }
+        }
+        for ( Map.Entry<Integer,Venue> entry : Global.getInstance(context).venues.entrySet() ) {
+            if ( venues.containsKey(entry.getKey()) ) continue;
+            int vId = entry.getKey();
+            Venue v = Global.getInstance(context).venues.get(vId);
+            if ( v == null || v.filtered(context) ) continue;
+            Global.getInstance(context).CGC.Resolve(context, v);
+        }
+    }
 }

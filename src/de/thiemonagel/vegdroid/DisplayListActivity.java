@@ -1,10 +1,9 @@
 package de.thiemonagel.vegdroid;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,6 +20,11 @@ import android.widget.RatingBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+/**
+ *
+ * TODO: switch to "Global" implementation instead of "MyData"
+ *
+ */
 public class DisplayListActivity extends ListActivity {
 
     // Progress Dialog
@@ -39,7 +43,7 @@ public class DisplayListActivity extends ListActivity {
         MyData.initInstance(this);
 
         // loading in background thread
-        new Load().execute();
+        new Load(this).execute();
     }
 
     @Override
@@ -66,7 +70,7 @@ public class DisplayListActivity extends ListActivity {
                 startActivity(intent);
                 return true;
             case R.id.menu_filter_cat:
-                CreateDialog().show();
+                FilterDialog.CreateDialog(this).show();
                 return true;
             case R.id.menu_map:
                 intent = new Intent(this, MapActivity.class);
@@ -113,6 +117,11 @@ public class DisplayListActivity extends ListActivity {
      * Background Async Task to Load all product by making HTTP Request
      **/
     class Load extends AsyncTask<String, String, String> {
+        private Context mContext;
+
+        public Load(Context context) {
+            mContext = context;
+        }
 
         /**
          * Before starting background thread Show Progress Dialog
@@ -135,7 +144,7 @@ public class DisplayListActivity extends ListActivity {
             md.clearError();
             if ( !md.UpdateLocation() ) return null;
             if ( !md.Load()           ) return null;
-            md.updateList();
+            md.updateList(mContext);
             return null;
         }
 
@@ -164,34 +173,6 @@ public class DisplayListActivity extends ListActivity {
             });
 
         }
-    }
-
-    // adapted from https://developer.android.com/guide/topics/ui/dialogs.html
-    public Dialog CreateDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setTitle( R.string.popup_title_filter_cat )
-        // Specify the list array, the items to be selected by default (null for none),
-        // and the listener through which to receive callbacks when items are selected
-            .setMultiChoiceItems(R.array.categories, MyData.getInstance().getCatFilterBool(),
-                        new DialogInterface.OnMultiChoiceClickListener() {
-                //@Override
-                public void onClick(DialogInterface dialog, int which,
-                        boolean isChecked) {
-                    MyData.getInstance().setCatFilter(which, isChecked);
-                }
-            })
-        // Set the action buttons
-            .setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
-                //@Override
-                public void onClick(DialogInterface dialog, int id) {
-                    MyData.getInstance().updateList();
-                    DisplayListActivity.this.update();
-                    MyData.getInstance().commitCatFilter();
-                }
-            });
-
-        return builder.create();
     }
 
 }   // DisplayListActivity class

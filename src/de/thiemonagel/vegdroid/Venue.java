@@ -143,8 +143,18 @@ public class Venue {
         return mid;
     }
 
+    /**
+     * @return whether the venue is closed
+     */
     public boolean closed() {
         Date now = new Date();  // UTC
         return closeDate.before(now);
+    }
+
+    /**
+     * @return whether the venue is suppressed by the current filter settings
+     */
+    public boolean filtered(Context context) {
+        return ( ( catMask & Global.getInstance(context).getCatFilterMask() ) == 0 );
     }
 }
