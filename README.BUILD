@@ -1,6 +1,7 @@
 VegDroid depends on:
 
  * android-support-v4.jar
+ * ActionBarSherlock
  * google-play-services.jar (for Google Maps v2 API)
  * gson-2.2.2.jar (to support older devices, it is built into Android only starting from Honeycomb)
 
@@ -21,11 +22,14 @@ them into the APK:
    Project >> Properties >> Java Build Path >> Order and Export
 
 3. File >> Import >> Android >> Existing Android Code into Workspace >> Root Directory >>
-   >> <SDKDIR>/extras/google/google_play_services/libproject/google-play-services_lib
+   a) <SDKDIR>/extras/google/google_play_services/libproject/google-play-services_lib
+        ==> "google-play-services_lib" shows up in Eclipse project list
+   b) path/to/ActionBarSherlock/library
+        ==> "library" shows up in Eclipse project list
 
-   ==> google-play-services_lib should show up in Eclipse project list
-
-4. VegDroid >> Properties >> Android >> (Library) >> Add >> google-play-services_lib
+4. VegDroid >> Properties >> Android >> (Library) >> Add
+   a) google-play-services_lib
+   b) library
 
 
 Resources:

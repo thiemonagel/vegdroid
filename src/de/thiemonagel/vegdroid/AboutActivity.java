@@ -1,15 +1,15 @@
 package de.thiemonagel.vegdroid;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockActivity;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
-public class AboutActivity extends Activity {
+public class AboutActivity extends SherlockActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +32,7 @@ public class AboutActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.activity_about, menu);
+        getSupportMenuInflater().inflate(R.menu.activity_about, menu);
         return true;
     }
     */

@@ -72,7 +72,7 @@
         android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/Theme.Sherlock.Light" >
         <activity
             android:name="de.thiemonagel.vegdroid.MainActivity"
             android:label="@string/title_activity_main" >
@@ -112,15 +112,24 @@
         </activity>
 
         <!-- When specifing several keys, the last one takes precedence. -->
-        <!-- Google Maps API v2 key, release certificate FF:35:CA:4D:71:EA:BE:8D:E6:99:B8:F8:82:01:BA:F4:11:54:30:73 -->
+        <!-- Google Maps API v2 key:  Thiemo (release certificate FF:35:CA:4D:71:EA:BE:8D:E6:99:B8:F8:82:01:BA:F4:11:54:30:73) -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyC6XxZ0RehMdn-05ss_J_6-ztcPZgTRizQ" />
 
-        <!-- Google Maps API v2 key, debug certificate CC:D0:97:39:1D:24:DC:97:58:4C:4F:01:B2:B3:3F:1C:57:E4:38:EB -->
+        <!-- Google Maps API v2 key:  Thiemo (debug certificate CC:D0:97:39:1D:24:DC:97:58:4C:4F:01:B2:B3:3F:1C:57:E4:38:EB) -->
+        <!--
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyB9IYt3oTaAuGIE3NWYu3c9gl-BClLtTUg" />
+        -->
+        <!-- Google Maps API v2 key:  doubleA -->
+        <!--
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyAAp-LcACcjZz41ytE-VSt4pIPrdXLj-ts" />
+        -->
+
     </application>
 
 </manifest>
